@@ -1,0 +1,29 @@
+[
+  {
+    "id": "gal-001",
+    "src": "https://example.com/placeholder-press-01.jpg",
+    "alt": "rikito nishimura — manifesto day 1 press photo",
+    "credit": "belift lab / hybe",
+    "sourceUrl": "https://weverse.io/enhypen",
+    "date": "2022-10",
+    "category": "press"
+  },
+  {
+    "id": "gal-002",
+    "src": "https://example.com/placeholder-album-01.jpg",
+    "alt": "rikito nishimura — dark blood concept photo",
+    "credit": "belift lab / hybe",
+    "sourceUrl": "https://weverse.io/enhypen",
+    "date": "2023-05",
+    "category": "album"
+  },
+  {
+    "id": "gal-003",
+    "src": "https://example.com/placeholder-event-01.jpg",
+    "alt": "rikito nishimura — mama awards 2023",
+    "credit": "mnet / cj enm",
+    "sourceUrl": "https://mama.mwave.me",
+    "date": "2023-11",
+    "category": "event"
+  }
+]

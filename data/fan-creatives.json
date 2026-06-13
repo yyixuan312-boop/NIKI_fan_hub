@@ -1,0 +1,33 @@
+[
+  {
+    "id": "fc-001",
+    "type": "digital",
+    "artist": "@haruillust",
+    "platform": "Twitter",
+    "url": "https://x.com/haruillust/status/SAMPLE",
+    "thumbnail": "/screenshots/fc-001.jpg",
+    "date": "2024-03",
+    "tags": ["digital", "portrait"]
+  },
+  {
+    "id": "fc-002",
+    "type": "doll",
+    "artist": "@rkdolls_",
+    "platform": "Instagram",
+    "url": "https://www.instagram.com/p/SAMPLE",
+    "thumbnail": "/screenshots/fc-002.jpg",
+    "date": "2024-01",
+    "tags": ["doll", "handmade"]
+  },
+  {
+    "id": "fc-003",
+    "type": "group-order",
+    "artist": "@nishimura_go",
+    "platform": "Twitter",
+    "url": "https://x.com/nishimura_go/status/SAMPLE",
+    "thumbnail": "/screenshots/fc-003.jpg",
+    "date": "2024-02",
+    "orderStatus": "closed",
+    "tags": ["acrylic", "group-order"]
+  }
+]

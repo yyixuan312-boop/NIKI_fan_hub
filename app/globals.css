@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-readex-pro);
+}
+
+body {
+  font-family: var(--font-readex-pro), system-ui, -apple-system, sans-serif;
+  background: #000;
+  color: #fff;
+}
+
+.hero-title {
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+}
+
+#yt-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100vw, 177.78vh);
+  height: max(56.25vw, 100vh);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  border: none;
+}

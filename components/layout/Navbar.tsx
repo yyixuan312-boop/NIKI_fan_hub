@@ -1,0 +1,34 @@
+import Link from 'next/link'
+
+const NAV_LINKS = [
+  { label: 'home', href: '/' },
+  { label: 'videos', href: '/videos' },
+  { label: 'fan creatives', href: '/fan-creatives' },
+  { label: 'about', href: '/profile' },
+]
+
+export default function Navbar() {
+  return (
+    <nav className="absolute z-20 px-6 md:px-10 pt-6 top-0 left-0 right-0 flex items-center justify-between gap-4">
+
+      <div className="hidden md:flex items-center gap-1 bg-neutral-900/90 backdrop-blur rounded-full px-3 py-2">
+        {NAV_LINKS.map(({ label, href }) => (
+          <Link
+            key={href}
+            href={href}
+            className="text-neutral-300 hover:text-white transition-colors text-sm px-5 py-2 rounded-full"
+          >
+            {label}
+          </Link>
+        ))}
+      </div>
+
+      <Link
+        href="/profile"
+        className="bg-white text-black text-sm font-normal rounded-full px-6 py-3 hover:bg-neutral-200 transition-colors"
+      >
+        explore
+      </Link>
+    </nav>
+  )
+}

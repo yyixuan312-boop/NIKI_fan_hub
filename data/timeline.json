@@ -1,0 +1,25 @@
+[
+  {
+    "id": "tl-001",
+    "date": "2020-11-30",
+    "title": "enhypen debut — border: day one",
+    "description": "enhypen officially debuts with the ep border: day one under belift lab / hybe.",
+    "category": "debut",
+    "sourceUrl": "https://weverse.io/enhypen"
+  },
+  {
+    "id": "tl-002",
+    "date": "2021-10-12",
+    "title": "dimension: dilemma — first full album",
+    "description": "first full-length studio album dimension: dilemma released, debuting at no. 11 on the billboard 200.",
+    "category": "album"
+  },
+  {
+    "id": "tl-003",
+    "date": "2022-10-03",
+    "title": "manifesto: day 1 — first world tour",
+    "description": "manifesto: day 1 album released alongside the start of enhypen's first world tour.",
+    "category": "tour",
+    "sourceUrl": "https://weverse.io/enhypen"
+  }
+]
