@@ -1,13 +1,21 @@
-import { routeIntent } from "@/lib/agent/intentRouter"
-import { buildPrompt } from "@/lib/agent/promptBuilder"
+import { buildSystemPrompt } from "@/lib/agent/promptBuilder"
 
-interface DeepSeekMessage {
-  role: "assistant" | "user" | "system"
+interface ClientMessage {
+  role: "user" | "assistant"
   content: string
 }
 
+type TextPart = { type: "text"; text: string }
+type ImagePart = { type: "image_url"; image_url: { url: string } }
+type MessageContent = string | Array<TextPart | ImagePart>
+
+interface DeepSeekMessage {
+  role: "system" | "user" | "assistant"
+  content: MessageContent
+}
+
 interface DeepSeekResponse {
-  choices: Array<{ message: DeepSeekMessage }>
+  choices: Array<{ message: { role: string; content: string } }>
 }
 
 function parseOutput(raw: string): { designBrief: string; imagePrompt: string } {
@@ -20,25 +28,71 @@ function parseOutput(raw: string): { designBrief: string; imagePrompt: string } 
   }
 }
 
+function isClientMessage(m: unknown): m is ClientMessage {
+  return (
+    typeof m === "object" &&
+    m !== null &&
+    ((m as Record<string, unknown>).role === "user" ||
+      (m as Record<string, unknown>).role === "assistant") &&
+    typeof (m as Record<string, unknown>).content === "string"
+  )
+}
+
 export async function POST(request: Request): Promise<Response> {
   const apiKey = process.env.DEEPSEEK_API_KEY
   if (!apiKey) {
     return Response.json({ error: "API key not configured" }, { status: 500 })
   }
 
-  let input: string
+  let productType: string
+  let description: string
+  let history: ClientMessage[]
+  let image: string | undefined
+
   try {
-    const body = await request.json() as { input?: unknown }
-    if (typeof body.input !== "string" || body.input.trim() === "") {
-      return Response.json({ error: "Missing or invalid input" }, { status: 400 })
+    const body = await request.json() as Record<string, unknown>
+
+    if (typeof body.productType !== "string" || !body.productType.trim()) {
+      return Response.json({ error: "Missing productType" }, { status: 400 })
     }
-    input = body.input.trim()
+    if (typeof body.description !== "string" || !body.description.trim()) {
+      return Response.json({ error: "Missing description" }, { status: 400 })
+    }
+
+    productType = body.productType.trim()
+    description = body.description.trim()
+
+    history = Array.isArray(body.messages)
+      ? (body.messages as unknown[]).filter(isClientMessage)
+      : []
+
+    if (typeof body.image === "string" && body.image.startsWith("data:image/")) {
+      image = body.image
+    }
   } catch {
     return Response.json({ error: "Invalid request body" }, { status: 400 })
   }
 
-  const intent = routeIntent(input)
-  const prompt = buildPrompt(intent, input)
+  const userMessageText = `Product type: ${productType}\n\nDescription: ${description}`
+  const systemPrompt = buildSystemPrompt(productType)
+
+  const deepSeekMessages: DeepSeekMessage[] = [{ role: "system", content: systemPrompt }]
+
+  for (const msg of history) {
+    deepSeekMessages.push({ role: msg.role, content: msg.content })
+  }
+
+  if (image) {
+    deepSeekMessages.push({
+      role: "user",
+      content: [
+        { type: "image_url", image_url: { url: image } },
+        { type: "text", text: userMessageText },
+      ],
+    })
+  } else {
+    deepSeekMessages.push({ role: "user", content: userMessageText })
+  }
 
   let raw: string
   try {
@@ -48,10 +102,7 @@ export async function POST(request: Request): Promise<Response> {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
       },
-      body: JSON.stringify({
-        model: "deepseek-chat",
-        messages: [{ role: "user", content: prompt }],
-      }),
+      body: JSON.stringify({ model: "deepseek-chat", messages: deepSeekMessages }),
     })
 
     if (!res.ok) {

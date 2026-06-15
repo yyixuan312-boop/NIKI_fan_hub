@@ -7,10 +7,12 @@ import SectionHeader from '@/components/ui/SectionHeader'
 const creatives = fanCreativesData as FanCreative[]
 
 const FAN_ART_TYPES: FanCreative['type'][] = ['digital', 'traditional', '3d', 'acrylic']
-const GROUP_ORDER_TYPES: FanCreative['type'][] = ['doll', 'group-order']
+const DOLL_TYPES: FanCreative['type'][] = ['doll']
+const GROUP_ORDER_TYPES: FanCreative['type'][] = ['group-order']
 
 export default function FanCreativesPage() {
   const fanArt = creatives.filter((c) => FAN_ART_TYPES.includes(c.type))
+  const dolls = creatives.filter((c) => DOLL_TYPES.includes(c.type))
   const groupOrders = creatives.filter((c) => GROUP_ORDER_TYPES.includes(c.type))
 
   return (
@@ -31,7 +33,22 @@ export default function FanCreativesPage() {
       </section>
 
       <section className="mt-16 md:mt-24">
-        <SectionHeader title="group orders & dolls" />
+        <SectionHeader title="dolls" />
+        {dolls.length === 0 ? (
+          <p className="text-neutral-500 text-sm text-center py-16">
+            nothing here yet — check back soon
+          </p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
+            {dolls.map((creative) => (
+              <GroupOrderCard key={creative.id} creative={creative} />
+            ))}
+          </div>
+        )}
+      </section>
+
+      <section className="mt-16 md:mt-24">
+        <SectionHeader title="group orders" />
         {groupOrders.length === 0 ? (
           <p className="text-neutral-500 text-sm text-center py-16">
             nothing here yet — check back soon

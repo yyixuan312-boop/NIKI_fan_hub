@@ -1,26 +1,26 @@
 # PRODUCT.md
-# Rikito Nishimura — Fan Info Hub
+# Riki Nishimura — Fan Info Hub
 
 ---
 
 ## Product Positioning
 
-The go-to English-language reference site for Rikito Nishimura (ENHYPEN) fans.
+The go-to English-language reference site for Riki Nishimura (ENHYPEN) fans.
 An aggregation + index site — it does not host copyrighted content.
 Every piece of media shows a preview thumbnail + attribution + outbound link back to the original source.
 Manually curated by the site owner. No login, no user submissions.
 
 **Target user:** English-speaking ENE fans (global), age 16–28, active on Twitter/X, YouTube, Weverse.
-**Core pain:** No English hub specifically for Rikito. Fan art, group orders, and video archives are scattered with no central index.
+**Core pain:** No English hub specifically for Riki. Fan art, group orders, and video archives are scattered with no central index.
 
 ---
 
 ## Core User Journey
 
-1. User lands on **Home** → sees hero section with Rikito's name, background video, and quick nav
+1. User lands on **Home** → sees hero section with Riki's name, background video, and quick nav
 2. User browses **Videos** → sees thumbnail grid → clicks card → opens YouTube in new tab
 3. User visits **Fan Creatives** → browses fan art and group orders → clicks card → goes to original post
-4. User reads **Profile** → learns about Rikito's background, facts, units
+4. User reads **Profile** → learns about Riki's background, facts, units
 5. User explores **Timeline** → scrolls milestones from debut to now
 6. User views **Gallery** → sees low-res official press photos → clicks → goes to source
 

@@ -1,4 +1,4 @@
-const TAKEDOWN_EMAIL = 'takedown@rikito.fan'
+const TAKEDOWN_EMAIL = 'takedown@riki.fan'
 
 export default function Footer() {
   return (

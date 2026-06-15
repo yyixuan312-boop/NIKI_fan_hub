@@ -1,5 +1,5 @@
 # Architecture & Technical Constraints
-# Rikito Nishimura — Fan Info Hub
+# Riki Nishimura — Fan Info Hub
 
 > Claude Code must read PRODUCT.md and DESIGN.md before referencing this file.
 > This file defines hard constraints. Do not deviate without explicit user instruction.
@@ -253,7 +253,7 @@ app/api/
 lib/
 ├── agent/
 │   ├── intentRouter.ts   # Classifies user input into task type
-│   ├── memoryStore.ts    # Static knowledge base (Rikito facts + craft specs)
+│   ├── memoryStore.ts    # Static knowledge base (Riki facts + craft specs)
 │   └── promptBuilder.ts  # Builds final prompt from intent + memory + constraints
 └── types.ts              # Add AgentTypes here
 ```
@@ -266,7 +266,7 @@ intentRouter.ts → classify intent:
   "badge" | "doll" | "style-change" | "info"
   ↓
 memoryStore.ts → pull relevant constraints:
-  badge specs / doll specs / Rikito aesthetic facts
+  badge specs / doll specs / Riki aesthetic facts
   ↓
 promptBuilder.ts → assemble structured prompt
   ↓
@@ -288,8 +288,8 @@ type AgentIntent =
 No database. All knowledge hardcoded as typed constants.
 
 ```ts
-// Rikito aesthetic profile
-const RIKITO_PROFILE = {
+// Riki aesthetic profile
+const RIKI_PROFILE = {
   features: ["sharp jawline", "monolid eyes", "lean build", "167cm"],
   aesthetics: ["clean", "cold", "dark academia", "monochrome"],
   colors: ["black", "white", "deep navy", "charcoal grey"],

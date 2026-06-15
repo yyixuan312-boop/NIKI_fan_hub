@@ -11,9 +11,9 @@ const readexPro = Readex_Pro({
 });
 
 export const metadata: Metadata = {
-  title: "Rikito Nishimura — Fan Info Hub",
+  title: "Riki Nishimura — Fan Info Hub",
   description:
-    "your go-to english hub for all things rikito — fan art, videos, and more",
+    "your go-to english hub for all things riki — fan art, videos, and more",
 };
 
 export default function RootLayout({
@@ -23,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${readexPro.variable} antialiased`}>
-      <body className="min-h-screen bg-black text-white flex flex-col">
+      <body className="min-h-screen bg-black text-white flex flex-col" suppressHydrationWarning>
         <Navbar />
         {children}
         <Footer />
