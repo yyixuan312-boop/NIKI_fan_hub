@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default function VideoCard({ video }: Props) {
-  const [imgSrc, setImgSrc] = useState(getYoutubeThumbnail(video.youtubeId))
+  const [imgSrc, setImgSrc] = useState(video.thumbnail ?? getYoutubeThumbnail(video.youtubeId))
 
   return (
     <a

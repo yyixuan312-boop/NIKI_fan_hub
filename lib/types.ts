@@ -2,6 +2,7 @@ export interface Video {
   id: string
   title: string
   youtubeId: string
+  thumbnail?: string
   category: "mv" | "performance" | "variety" | "fancam" | "weverse-live"
   channelName: string
   date: string
@@ -38,3 +39,5 @@ export interface GalleryItem {
   date: string
   category: "press" | "album" | "event" | "weverse"
 }
+
+export type AgentIntent = "badge" | "doll" | "style-change" | "info"

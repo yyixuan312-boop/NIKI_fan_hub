@@ -2,7 +2,7 @@
   {
     "id": "mv-001",
     "title": "given-taken official mv",
-    "youtubeId": "GivenTaknMV1",
+    "youtubeId": "zEaFxvfxzyA&list=RDzEaFxvfxzyA&start_radio=1",
     "category": "mv",
     "channelName": "enhypen",
     "date": "2020-11-30",
@@ -11,7 +11,7 @@
   {
     "id": "fancam-001",
     "title": "rikito fancam — future perfect (pass the mic)",
-    "youtubeId": "RikitoFCam01",
+    "youtubeId": "tInPgCIouWM&list=RDtInPgCIouWM&start_radio=1",
     "category": "fancam",
     "channelName": "직캠 archive",
     "date": "2022-10-03",
@@ -19,11 +19,12 @@
   },
   {
     "id": "weverselive-001",
-    "title": "rikito weverse live — 231115",
-    "youtubeId": "WvLivRkt001x",
-    "category": "weverse-live",
-    "channelName": "enhypen weverse",
-    "date": "2023-11-15",
-    "durationLabel": "42:10"
+    "title": "Cover_LIMBO_260425",
+    "youtubeId": "KChyOsjqmfM&list=RDKChyOsjqmfM&start_radio=1",
+    "thumbnail": "/screenshots/Cover_LIMBO_260425.png",
+    "category": "Cover",
+    "channelName": "enhypen",
+    "date": "2026-04-25",
+    "durationLabel": "3:52"
   }
 ]

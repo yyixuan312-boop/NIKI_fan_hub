@@ -227,3 +227,116 @@ A feature is considered done when:
 - [ ] Footer contains takedown contact email
 - [ ] No hardcoded content in JSX — all data from `/data/*.json`
 - [ ] Lighthouse performance score ≥ 80 on mobile
+
+
+---
+
+## Design Agent Module
+
+### Overview
+A fan creative design assistant integrated at `/design-agent`.
+Takes a vague user request → routes to the correct task type → outputs structured design brief + image generation prompt.
+Powered by DeepSeek V3 API.
+
+### New Page
+```
+app/
+└── design-agent/
+    ├── page.tsx          # Main agent UI
+    ├── loading.tsx
+    └── error.tsx
+
+app/api/
+└── agent/
+    └── route.ts          # Server-side API route (keeps Key safe)
+
+lib/
+├── agent/
+│   ├── intentRouter.ts   # Classifies user input into task type
+│   ├── memoryStore.ts    # Static knowledge base (Rikito facts + craft specs)
+│   └── promptBuilder.ts  # Builds final prompt from intent + memory + constraints
+└── types.ts              # Add AgentTypes here
+```
+
+### Agent Data Flow
+```
+User input (vague)
+  ↓
+intentRouter.ts → classify intent:
+  "badge" | "doll" | "style-change" | "info"
+  ↓
+memoryStore.ts → pull relevant constraints:
+  badge specs / doll specs / Rikito aesthetic facts
+  ↓
+promptBuilder.ts → assemble structured prompt
+  ↓
+POST /api/agent → DeepSeek V3 API call (server-side)
+  ↓
+Output: design brief + image generation prompt
+```
+
+### Intent Types
+```ts
+type AgentIntent =
+  | "badge"        // 吧唧 design
+  | "doll"         // 棉花娃娃 design
+  | "style-change" // modify existing concept
+  | "info"         // general info query
+```
+
+### Memory Store (Static, in lib/agent/memoryStore.ts)
+No database. All knowledge hardcoded as typed constants.
+
+```ts
+// Rikito aesthetic profile
+const RIKITO_PROFILE = {
+  features: ["sharp jawline", "monolid eyes", "lean build", "167cm"],
+  aesthetics: ["clean", "cold", "dark academia", "monochrome"],
+  colors: ["black", "white", "deep navy", "charcoal grey"],
+  eras: ["BORDER: DAY ONE", "DIMENSION", "DARK BLOOD", "ORANGE BLOOD"]
+}
+
+// Craft constraints
+const BADGE_SPECS = {
+  standardSizes: ["44mm", "58mm", "75mm"],
+  finish: ["glossy", "matte", "holographic"],
+  printNote: "300dpi minimum, CMYK color space, 3mm bleed"
+}
+
+const DOLL_SPECS = {
+  standardSize: "20cm",
+  material: "PP cotton fill, fleece fabric",
+  artNote: "flat design, front-facing, simplified facial features"
+}
+```
+
+### API Route (keeps DeepSeek Key server-side only)
+File: `app/api/agent/route.ts`
+
+```ts
+// reads DEEPSEEK_API_KEY from process.env
+// never expose Key to client
+// calls https://api.deepseek.com/v1/chat/completions
+// model: "deepseek-chat" (V3)
+```
+
+### Environment Variable
+```
+DEEPSEEK_API_KEY=sk-your-key-here   # in .env.local only, never committed
+```
+
+### Design Agent UI Requirements
+- Same dark aesthetic as rest of site (black bg, white text, Readex Pro)
+- Single text input: `"describe what you want..."` placeholder
+- Submit button: `"generate"` pill style matching navbar
+- Output area: two sections side by side on desktop, stacked on mobile
+  - Left: **Design Brief** (structured text)
+  - Right: **Image Prompt** (copyable code block)
+- Loading state: `"thinking..."` with `animate-pulse` on output area
+- Error state: `"something went wrong — try again"` inline
+
+### Invariants (Do Not Break)
+- DeepSeek API Key must NEVER appear in client-side code
+- All API calls go through `/api/agent` server route
+- Memory store is read-only — no user input modifies it
+- Output always contains both a design brief AND an image prompt
