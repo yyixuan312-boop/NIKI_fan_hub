@@ -83,13 +83,9 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   if (image) {
-    deepSeekMessages.push({
-      role: "user",
-      content: [
-        { type: "image_url", image_url: { url: image } },
-        { type: "text", text: userMessageText },
-      ],
-    })
+    // Note: Image support in DeepSeek would require handling base64 differently
+    // For now, just send the text description
+    deepSeekMessages.push({ role: "user", content: userMessageText })
   } else {
     deepSeekMessages.push({ role: "user", content: userMessageText })
   }

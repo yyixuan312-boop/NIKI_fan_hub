@@ -11,10 +11,78 @@ export const BADGE_SPECS = {
   printNote: "300dpi minimum, CMYK color space, 3mm bleed",
 } as const
 
-export const DOLL_SPECS = {
-  standardSize: "20cm",
-  material: "PP cotton fill, fleece fabric",
-  artNote: "flat design, front-facing, simplified facial features",
+export const RIKITO_DOLL_FEATURES = {
+  facialFeatures: {
+    eyes: "narrow almond-shaped monolid eyes, slightly droopy outer corners, sharp and intense",
+    lips: "notably full/thick lips, slightly pouty, pink tone",
+    nose: "straight bridge, soft tip",
+    distinguishingMarks: [
+      "mole under LEFT eye (crucial for recognition, especially in animal/object dolls)",
+      "mole on chin",
+    ],
+    blush: "soft cheek blush marks in fan art/chibi representation",
+    note: "when no hair to rely on (animal/object dolls), the mole under left eye + thick lips are the PRIMARY recognition features — always include both",
+  },
+  humanoidDoll: {
+    description: "chibi figure based on real Riki appearance, hair is the main design anchor",
+    hairVariants: [
+      "black hair: straight, side-swept or slightly messy — references stage/performance looks (p1, p2 style)",
+      "platinum blonde / white blonde: fluffy, voluminous — references airport/casual looks (p3, p4 style)",
+      "textured spiky blonde: disheveled, high-energy — references variety/live looks (p5, p6 style)",
+    ],
+    genderVariants: [
+      "male default: standard chibi proportions",
+      "female version (女娃): same face features, styled with feminine outfit/hair accessories — popular among fans",
+    ],
+    mustInclude: [
+      "mole under left eye",
+      "mole on chin",
+      "full lips",
+      "narrow eyes",
+    ],
+  },
+  animalAndObjectDolls: {
+    note: "when doing animal or object type, hair is absent — facial moles and lip shape become CRITICAL identity markers",
+    popularTypes: [
+      {
+        type: "leopard (豹子塑)",
+        shape: "leopard body/head form",
+        faceNote: "keep narrow eyes + mole under left eye + thick lips on the face panel",
+      },
+      {
+        type: "beagle dog (比格塑)",
+        shape: "beagle dog with floppy ears",
+        faceNote: "droopy eyes matching beagle expression + both moles preserved",
+      },
+      {
+        type: "dumpling (饺子塑)",
+        shape: "half-moon dumpling body shape",
+        faceNote: "tiny face on dumpling surface, mole under left eye is key identifier",
+      },
+      {
+        type: "monkey (猴子塑)",
+        shape: "round monkey head + small body",
+        faceNote: "narrow eyes + full lips + moles on simplified round face",
+      },
+      {
+        type: "duck (鸭子塑)",
+        shape: "duck body, beak optional or stylized as lips",
+        faceNote: "mole under left eye on duck face, thick lip shape suggested",
+      },
+      {
+        type: "octopus (章鱼塑)",
+        shape: "round head with tentacle body",
+        faceNote: "face on round head, always include left eye mole + full lips",
+      },
+    ],
+  },
+  physicalSpecs: {
+    sizes: ["10cm (keychain/mini)", "15cm (standard)", "20cm (large)"],
+    material: "short plush or minky fabric, PP cotton fill, embroidered face",
+    faceMethod: "embroidery preferred (not printed) — moles must be embroidered as small satin stitch dots",
+    artRequirement: "front-facing flat illustration, 300dpi, clean lineart, transparent background",
+    expressionVariants: "recommend designing both open-eye and sleepy/closed-eye versions",
+  },
 } as const
 
 export const BADGE_STYLE_SPECS = {

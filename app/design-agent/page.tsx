@@ -105,7 +105,10 @@ export default function DesignAgentPage() {
         }),
       })
 
-      if (!res.ok) throw new Error('request failed')
+      if (!res.ok) {
+        const errBody = await res.json().catch(() => null) as { error?: string } | null
+        throw new Error(errBody?.error ?? `request failed (${res.status})`)
+      }
 
       const data = (await res.json()) as AgentResult
       setHistory((prev) => [
@@ -119,8 +122,8 @@ export default function DesignAgentPage() {
       ])
       setDescription('')
       clearImage()
-    } catch {
-      setError('something went wrong — try again')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'something went wrong — try again')
     } finally {
       setLoading(false)
     }

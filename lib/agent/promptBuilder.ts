@@ -1,5 +1,5 @@
 import type { AgentIntent } from "@/lib/types"
-import { RIKI_PROFILE, BADGE_STYLE_SPECS, DOLL_SPECS, STICKER_SPECS } from "@/lib/agent/memoryStore"
+import { RIKI_PROFILE, BADGE_STYLE_SPECS, RIKITO_DOLL_FEATURES, STICKER_SPECS } from "@/lib/agent/memoryStore"
 
 function profileBlock(): string {
   return [
@@ -22,11 +22,35 @@ function craftBlock(productType: string): string {
     ].join("\n")
   }
   if (productType === "doll") {
+    const f = RIKITO_DOLL_FEATURES
+    const animalTypes = f.animalAndObjectDolls.popularTypes
+      .map((t) => `${t.type} (${t.shape}) — ${t.faceNote}`)
+      .join(" | ")
     return [
-      `Craft type: 棉花娃娃 (cotton doll)`,
-      `Standard size: ${DOLL_SPECS.standardSize}`,
-      `Material: ${DOLL_SPECS.material}`,
-      `Art style note: ${DOLL_SPECS.artNote}`,
+      `Craft type: 棉花娃娃 (cotton doll / plush figure)`,
+      ``,
+      `## Facial Recognition Features (CRITICAL)`,
+      `Eyes: ${f.facialFeatures.eyes}`,
+      `Lips: ${f.facialFeatures.lips}`,
+      `Distinguishing marks: ${f.facialFeatures.distinguishingMarks.join(" + ")}`,
+      `Recognition note: ${f.facialFeatures.note}`,
+      ``,
+      `## Humanoid Doll`,
+      `${f.humanoidDoll.description}`,
+      `Hair variants: ${f.humanoidDoll.hairVariants.join(" | ")}`,
+      `Gender variants: ${f.humanoidDoll.genderVariants.join(" | ")}`,
+      `Must include: ${f.humanoidDoll.mustInclude.join(", ")}`,
+      ``,
+      `## Animal / Object Dolls`,
+      `Note: ${f.animalAndObjectDolls.note}`,
+      `Popular types: ${animalTypes}`,
+      ``,
+      `## Physical Specs`,
+      `Sizes: ${f.physicalSpecs.sizes.join(" / ")}`,
+      `Material: ${f.physicalSpecs.material}`,
+      `Face method: ${f.physicalSpecs.faceMethod}`,
+      `Art requirement: ${f.physicalSpecs.artRequirement}`,
+      `Expression variants: ${f.physicalSpecs.expressionVariants}`,
     ].join("\n")
   }
   if (productType === "sticker") {
