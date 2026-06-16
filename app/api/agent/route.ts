@@ -5,13 +5,9 @@ interface ClientMessage {
   content: string
 }
 
-type TextPart = { type: "text"; text: string }
-type ImagePart = { type: "image_url"; image_url: { url: string } }
-type MessageContent = string | Array<TextPart | ImagePart>
-
 interface DeepSeekMessage {
   role: "system" | "user" | "assistant"
-  content: MessageContent
+  content: string
 }
 
 interface DeepSeekResponse {
@@ -47,7 +43,6 @@ export async function POST(request: Request): Promise<Response> {
   let productType: string
   let description: string
   let history: ClientMessage[]
-  let image: string | undefined
 
   try {
     const body = await request.json() as Record<string, unknown>
@@ -65,10 +60,6 @@ export async function POST(request: Request): Promise<Response> {
     history = Array.isArray(body.messages)
       ? (body.messages as unknown[]).filter(isClientMessage)
       : []
-
-    if (typeof body.image === "string" && body.image.startsWith("data:image/")) {
-      image = body.image
-    }
   } catch {
     return Response.json({ error: "Invalid request body" }, { status: 400 })
   }
@@ -82,13 +73,7 @@ export async function POST(request: Request): Promise<Response> {
     deepSeekMessages.push({ role: msg.role, content: msg.content })
   }
 
-  if (image) {
-    // Note: Image support in DeepSeek would require handling base64 differently
-    // For now, just send the text description
-    deepSeekMessages.push({ role: "user", content: userMessageText })
-  } else {
-    deepSeekMessages.push({ role: "user", content: userMessageText })
-  }
+  deepSeekMessages.push({ role: "user", content: userMessageText })
 
   let raw: string
   try {
@@ -98,7 +83,7 @@ export async function POST(request: Request): Promise<Response> {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
       },
-      body: JSON.stringify({ model: "deepseek-chat", messages: deepSeekMessages }),
+      body: JSON.stringify({ model: "deepseek-v4-pro", messages: deepSeekMessages }),
     })
 
     if (!res.ok) {

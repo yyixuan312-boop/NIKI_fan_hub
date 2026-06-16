@@ -1,7 +1,21 @@
 'use client'
 
 import Image from 'next/image'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import { motion } from 'framer-motion'
+import looks from '@/data/riki-looks.json'
+
+interface Look {
+  id: string
+  era: string
+  label: string
+  thumbnail: string
+  hairColor: string
+  hairStyle: string
+  outfit: string
+  vibe: string
+  date?: string  // "YYYY-MM" — used for year label when era has no year
+}
 
 const PRODUCT_TYPES = ['badge', 'doll', 'cartoon', 'sticker', 'other'] as const
 type ProductType = (typeof PRODUCT_TYPES)[number]
@@ -14,7 +28,6 @@ interface AgentResult {
 interface Turn {
   productType: string
   description: string
-  userImage?: string
   result: AgentResult
 }
 
@@ -23,47 +36,278 @@ interface ApiMessage {
   content: string
 }
 
+// ─── Layout constants for 8-card fan ─────────────────────────────────────────
+
+// Rotations evenly spread across ±52°, step = 104/7 ≈ 14.86° rounded to 15°
+const ROTATIONS = [-52, -37, -22, -7, 7, 22, 37, 52] as const
+// Step = 96px (128 card width − 32px overlap). Span = 7×96 = 672px, centered.
+const X_OFFSETS = [-336, -240, -144, -48, 48, 144, 240, 336] as const
+// Center pair (indices 3,4) highest; outer cards flush with arc.
+const Y_OFFSETS = [0, -8, -16, -24, -24, -16, -8, 0] as const
+// Bell-curve z stacking, center pair at top.
+const Z_BASE    = [1, 2, 3, 5, 5, 3, 2, 1] as const
+
+// Arc SVG: 800×80. Endpoints at x=64 (=400−336) and x=736 (=400+336), y=60.
+// Path: M 64 60 Q 400 10 736 60  — x is linear for this symmetric bezier.
+// Dot x: 64 + 672*(i/7). Dot y: 60 − 100*t*(1−t).
+// Cards pivot at bottom:20px (= SVG_H − arc-endpoint-y = 80−60).
+const SVG_W = 800
+const SVG_H = 80
+const CARD_BOTTOM = 20
+
+// ─── Arc Timeline ─────────────────────────────────────────────────────────────
+
+function ArcTimeline({ looks, selectedLookId }: { looks: Look[]; selectedLookId: string | null }) {
+  const n = looks.length
+  const dots = looks.map((look, i) => {
+    const t = i / (n - 1)
+    const x = 64 + 672 * t
+    const y = 60 - 100 * t * (1 - t)
+    const year = look.date?.slice(0, 4) ?? look.era.match(/\d{4}/)?.[0] ?? ''
+    return { x, y, year, isSelected: look.id === selectedLookId }
+  })
+
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        bottom: 0,
+        left: '50%',
+        transform: 'translateX(-50%)',
+        pointerEvents: 'none',
+        zIndex: 0,
+      }}
+    >
+      <svg width={SVG_W} height={SVG_H} viewBox={`0 0 ${SVG_W} ${SVG_H}`}>
+        {/* Faint verticals from dot down to card pivot line (y=60) */}
+        {dots.map((dot, i) => (
+          <line
+            key={i}
+            x1={dot.x} y1={dot.y}
+            x2={dot.x} y2={60}
+            stroke="white"
+            strokeWidth="1"
+            strokeOpacity="0.1"
+          />
+        ))}
+
+        {/* Arc */}
+        <path
+          d="M 64 60 Q 400 10 736 60"
+          stroke="rgba(255,255,255,0.2)"
+          strokeWidth="1"
+          fill="none"
+        />
+
+        {/* Dots + year labels */}
+        {dots.map((dot, i) => (
+          <g key={i}>
+            <motion.circle
+              cx={dot.x}
+              cy={dot.y}
+              animate={{
+                r:    dot.isSelected ? 4 : 2.5,
+                fill: dot.isSelected ? '#ffffff' : 'rgba(255,255,255,0.3)',
+              }}
+              transition={{ duration: 0.3 }}
+            />
+            <text
+              x={dot.x}
+              y={dot.y + 14}
+              textAnchor="middle"
+              fontSize="10"
+              fill="rgba(255,255,255,0.3)"
+              style={{ fontFamily: 'inherit' }}
+            >
+              {dot.year}
+            </text>
+          </g>
+        ))}
+      </svg>
+    </div>
+  )
+}
+
+// ─── Fan Card ────────────────────────────────────────────────────────────────
+
+interface FanCardProps {
+  look: Look
+  index: number
+  isFlipped: boolean
+  isSelected: boolean
+  anyHovered: boolean
+  onCardClick: () => void
+  onUseLook: () => void
+  onHoverStart: () => void
+  onHoverEnd: () => void
+}
+
+function FanCard({
+  look,
+  index,
+  isFlipped,
+  isSelected,
+  anyHovered,
+  onCardClick,
+  onUseLook,
+  onHoverStart,
+  onHoverEnd,
+}: FanCardProps) {
+  const [hovered, setHovered] = useState(false)
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => { setMounted(true) }, [])
+  const vibeTags = look.vibe.split(',').map((v) => v.trim())
+
+  const zIndex = hovered ? 9999 : isFlipped ? 70 : Z_BASE[index]
+
+  // After mount, drop the stagger delay so interactions are instant.
+  const transition = !mounted
+    ? { delay: index * 0.06, duration: 0.45, ease: 'easeOut' as const }
+    : {
+        duration: 0.25,
+        ease: 'easeOut' as const,
+        scale: { type: 'spring' as const, stiffness: 300, damping: 24 },
+        y: { type: 'spring' as const, stiffness: 300, damping: 24 },
+      }
+
+  return (
+    <motion.div
+      style={{
+        position: 'absolute',
+        bottom: CARD_BOTTOM,
+        left: `calc(50% + ${X_OFFSETS[index]}px - 4rem)`,
+        width: '8rem',
+        height: '12rem',
+        transformOrigin: 'bottom center',
+        zIndex,
+        cursor: 'pointer',
+      }}
+      initial={{ rotate: 0, y: 0, scale: 1, opacity: 0, filter: 'grayscale(1)' }}
+      animate={{
+        rotate: ROTATIONS[index],
+        y: Y_OFFSETS[index],
+        scale: 1,
+        opacity: isFlipped ? 1 : anyHovered ? 0.3 : 0.4,
+        filter: isFlipped ? 'grayscale(0)' : 'grayscale(1)',
+      }}
+      transition={transition}
+      whileHover={{ scale: 1.5, y: Y_OFFSETS[index] - 20, opacity: 1, filter: 'grayscale(0)' }}
+      onClick={onCardClick}
+      onHoverStart={() => { setHovered(true); onHoverStart() }}
+      onHoverEnd={() => { setHovered(false); onHoverEnd() }}
+    >
+      {/* Perspective wrapper */}
+      <div style={{ perspective: '800px', width: '100%', height: '100%' }}>
+        <motion.div
+          animate={{ rotateY: isFlipped ? 180 : 0 }}
+          transition={{ duration: 0.5, ease: 'easeInOut' }}
+          style={{
+            width: '100%',
+            height: '100%',
+            transformStyle: 'preserve-3d',
+            position: 'relative',
+          }}
+        >
+          {/* Front face */}
+          <div
+            style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
+            className={`absolute inset-0 rounded-xl overflow-hidden border bg-neutral-900 ${
+              isSelected ? 'border-white' : 'border-white/20'
+            }`}
+          >
+            {/* Top 80%: photo anchored to top so heads aren't cropped */}
+            <div className="relative" style={{ height: '80%' }}>
+              <Image
+                src={look.thumbnail}
+                alt={look.label}
+                fill
+                unoptimized
+                className="object-cover object-top"
+              />
+            </div>
+            {/* Bottom 20%: era + look name */}
+            <div className="bg-neutral-900 px-2 py-1.5" style={{ height: '20%' }}>
+              <p className="text-xs text-white/50 truncate leading-tight">{look.era}</p>
+              <p className="text-sm text-white truncate leading-tight">{look.label}</p>
+            </div>
+          </div>
+
+          {/* Back face */}
+          <div
+            style={{
+              backfaceVisibility: 'hidden',
+              WebkitBackfaceVisibility: 'hidden',
+              transform: 'rotateY(180deg)',
+            }}
+            className="absolute inset-0 rounded-xl overflow-hidden border border-white bg-neutral-900 flex flex-col p-2.5"
+          >
+            <p className="text-[9px] text-white/50 leading-none">{look.era}</p>
+            <p className="text-[11px] font-medium text-white mt-1 leading-tight">{look.label}</p>
+            <p className="text-[9px] text-white/60 mt-1.5 leading-snug">
+              {look.hairColor} · {look.hairStyle}
+            </p>
+            <p className="text-[9px] text-white/60 mt-1 leading-snug line-clamp-2">{look.outfit}</p>
+            <div className="flex flex-wrap gap-0.5 mt-1.5">
+              {vibeTags.map((tag) => (
+                <span
+                  key={tag}
+                  className="text-[8px] px-1.5 py-0.5 rounded-full border border-white/30 text-white/60"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+            <div className="mt-auto">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onUseLook()
+                }}
+                className="w-full bg-white text-black text-[10px] rounded-full px-3 py-1 hover:bg-neutral-200 transition-colors"
+              >
+                use this look
+              </button>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </motion.div>
+  )
+}
+
+// ─── Page ─────────────────────────────────────────────────────────────────────
+
 export default function DesignAgentPage() {
   const [productType, setProductType] = useState<ProductType>('badge')
   const [customType, setCustomType] = useState('')
   const [description, setDescription] = useState('')
-  const [image, setImage] = useState<string | null>(null)
-  const [fileName, setFileName] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [history, setHistory] = useState<Turn[]>([])
   const [copied, setCopied] = useState<string | null>(null)
-  const fileRef = useRef<HTMLInputElement>(null)
+  const [selectedLookId, setSelectedLookId] = useState<string | null>(null)
+  const [flippedLookId, setFlippedLookId] = useState<string | null>(null)
+  const [hoveredLookId, setHoveredLookId] = useState<string | null>(null)
+  const latestResultRef = useRef<HTMLDivElement>(null)
+
+  const selectedLook = (looks as Look[]).find((l) => l.id === selectedLookId) ?? null
+  const lookContext = selectedLook
+    ? `Reference look — era: ${selectedLook.era}, hair: ${selectedLook.hairColor} ${selectedLook.hairStyle}, outfit: ${selectedLook.outfit}, vibe: ${selectedLook.vibe}`
+    : ''
 
   const effectiveProductType =
     productType === 'other' ? customType.trim() || 'other' : productType
   const canSubmit =
     description.trim().length > 0 && (productType !== 'other' || customType.trim().length > 0)
 
-  function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]
-    if (!file) return
-
-    if (!['image/jpeg', 'image/png'].includes(file.type)) {
-      setError('only jpg and png files are supported')
-      return
-    }
-    if (file.size > 5 * 1024 * 1024) {
-      setError('image must be under 5mb')
-      return
-    }
-
-    const reader = new FileReader()
-    reader.onload = () => setImage(reader.result as string)
-    reader.readAsDataURL(file)
-    setFileName(file.name)
-    setError(null)
+  function handleLookCardClick(lookId: string) {
+    setFlippedLookId(prev => prev === lookId ? null : lookId)
   }
 
-  function clearImage() {
-    setImage(null)
-    setFileName(null)
-    if (fileRef.current) fileRef.current.value = ''
+  function handleUseLook(lookId: string) {
+    setSelectedLookId(lookId)
+    setFlippedLookId(null)
   }
 
   function handleNewDraft() {
@@ -72,7 +316,8 @@ export default function DesignAgentPage() {
     setCustomType('')
     setDescription('')
     setError(null)
-    clearImage()
+    setSelectedLookId(null)
+    setFlippedLookId(null)
   }
 
   async function handleSubmit(e: React.SyntheticEvent) {
@@ -99,14 +344,13 @@ export default function DesignAgentPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           productType: effectiveProductType,
-          description: description.trim(),
+          description: [description.trim(), lookContext].filter(Boolean).join('\n\n'),
           messages,
-          image: image ?? undefined,
         }),
       })
 
       if (!res.ok) {
-        const errBody = await res.json().catch(() => null) as { error?: string } | null
+        const errBody = (await res.json().catch(() => null)) as { error?: string } | null
         throw new Error(errBody?.error ?? `request failed (${res.status})`)
       }
 
@@ -116,12 +360,11 @@ export default function DesignAgentPage() {
         {
           productType: effectiveProductType,
           description: description.trim(),
-          userImage: image ?? undefined,
           result: data,
         },
       ])
       setDescription('')
-      clearImage()
+      setTimeout(() => latestResultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'something went wrong — try again')
     } finally {
@@ -136,7 +379,7 @@ export default function DesignAgentPage() {
   }
 
   return (
-    <main className="min-h-screen bg-black text-white px-6 md:px-10 pt-28 pb-16">
+    <main className="min-h-screen bg-black text-white px-6 md:px-10 pt-20 pb-16">
       <div className="max-w-4xl mx-auto">
 
         <div className="flex items-start justify-between mb-2">
@@ -158,21 +401,11 @@ export default function DesignAgentPage() {
         {history.length > 0 && (
           <div className="space-y-10 mb-12">
             {history.map((turn, i) => (
-              <div key={i} className="space-y-6">
+              <div key={i} className="space-y-6" ref={i === history.length - 1 ? latestResultRef : undefined}>
                 <div className="space-y-2">
                   <span className="text-xs text-neutral-500">
                     you · {turn.productType}
                   </span>
-                  {turn.userImage && (
-                    <Image
-                      src={turn.userImage}
-                      alt="uploaded reference"
-                      width={64}
-                      height={64}
-                      unoptimized
-                      className="rounded object-cover block"
-                    />
-                  )}
                   <p className="text-[15px] text-white/70">{turn.description}</p>
                 </div>
 
@@ -204,6 +437,31 @@ export default function DesignAgentPage() {
             ))}
           </div>
         )}
+
+        {/* Fan card look selector */}
+        <div className="mb-12">
+          <p className="text-xs text-white/40 mb-4">select a look (optional)</p>
+          <div className="relative w-full h-[340px]">
+            <ArcTimeline
+              looks={looks as Look[]}
+              selectedLookId={selectedLookId}
+            />
+            {(looks as Look[]).map((look, index) => (
+              <FanCard
+                key={look.id}
+                look={look}
+                index={index}
+                isFlipped={flippedLookId === look.id}
+                isSelected={selectedLookId === look.id}
+                anyHovered={hoveredLookId !== null}
+                onCardClick={() => handleLookCardClick(look.id)}
+                onUseLook={() => handleUseLook(look.id)}
+                onHoverStart={() => setHoveredLookId(look.id)}
+                onHoverEnd={() => setHoveredLookId(null)}
+              />
+            ))}
+          </div>
+        </div>
 
         {/* Input form */}
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -239,59 +497,20 @@ export default function DesignAgentPage() {
           </div>
 
           {/* 2. Description textarea */}
-          <textarea
-            rows={4}
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="describe the vibe, colors, pose, outfit details..."
-            className="w-full bg-neutral-900 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-neutral-500 outline-none focus:border-white/30 transition-colors resize-none"
-          />
-
-          {/* 3. Image upload */}
-          <div className="space-y-3">
-            <input
-              ref={fileRef}
-              type="file"
-              accept="image/jpeg,image/png"
-              className="hidden"
-              onChange={handleFileSelect}
-            />
-            {image && fileName ? (
-              <div className="flex items-center gap-3">
-                <Image
-                  src={image}
-                  alt="upload preview"
-                  width={48}
-                  height={48}
-                  unoptimized
-                  className="rounded object-cover shrink-0"
-                />
-                <div className="flex flex-col gap-1 min-w-0">
-                  <span className="text-xs text-white/80 truncate">{fileName}</span>
-                  <button
-                    type="button"
-                    onClick={clearImage}
-                    className="text-xs text-neutral-500 hover:text-white transition-colors text-left"
-                  >
-                    remove
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <button
-                type="button"
-                onClick={() => fileRef.current?.click()}
-                className="inline-flex items-center gap-2 border border-white/20 text-white/50 hover:text-white hover:border-white/40 text-xs rounded-full px-4 py-1.5 transition-colors"
-              >
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                  <path d="M6 1v10M1 6h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                </svg>
-                upload reference image (optional)
-              </button>
+          <div className="space-y-2">
+            {selectedLook && (
+              <p className="text-xs text-white/40">reference look: {selectedLook.label}</p>
             )}
+            <textarea
+              rows={4}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="describe the vibe, colors, pose, outfit details..."
+              className="w-full bg-neutral-900 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-neutral-500 outline-none focus:border-white/30 transition-colors resize-none"
+            />
           </div>
 
-          {/* 4. Submit */}
+          {/* 3. Submit */}
           <button
             type="submit"
             disabled={loading || !canSubmit}

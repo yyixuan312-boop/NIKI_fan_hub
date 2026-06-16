@@ -1,0 +1,90 @@
+[
+  {
+    "id": "look-001",
+    "era": "I-LAND",
+    "date": "2020-05",
+    "label": "i-land debut",
+    "hairColor": "black",
+    "hairStyle": "straight, neat side part",
+    "outfit": "black quilted vest over white long sleeve, chain accessories",
+    "vibe": "clean, structured, young, mysterious",
+    "thumbnail": "/looks/look-001.jpg"
+  },
+  {
+    "id": "look-002",
+    "era": "DIMENSION : DILEMMA",
+    "date": "2021-11",
+    "label": "dimension dilemma stage",
+    "hairColor": "platinum blonde",
+    "hairStyle": "fluffy, voluminous side part",
+    "outfit": "grey-blue oversized shirt, camo wide-leg pants, white sneakers, chain necklace",
+    "vibe": "cool, streetwear, relaxed confidence",
+    "thumbnail": "/looks/look-002.jpg"
+  },
+  {
+    "id": "look-003",
+    "era": "DIMENSION : ANSWER",
+    "date": "2022-01",
+    "label": "dimension answer stage",
+    "hairColor": "black",
+    "hairStyle": "straight, sleek",
+    "outfit": "all white — white puffer jacket, white wide-leg pants, silver metallic hem detail",
+    "vibe": "clean, futuristic, monochrome white",
+    "thumbnail": "/looks/look-003.jpg"
+  },
+  {
+    "id": "look-004",
+    "era": "ORANGE BLOOD",
+    "date": "2023-12",
+    "label": "orange blood stage",
+    "hairColor": "sandy blonde",
+    "hairStyle": "tousled, natural texture",
+    "outfit": "brown stripe hoodie jacket, wide-leg washed denim jeans, UGG boots, layered necklace",
+    "vibe": "vintage, casual, warm tones, laid-back",
+    "thumbnail": "/looks/look-004.jpg"
+  },
+  {
+    "id": "look-005",
+    "era": "ROMANCE : UNTOLD",
+    "date": "2024-08",
+    "label": "romance untold stage",
+    "hairColor": "black",
+    "hairStyle": "slicked back, edgy",
+    "outfit": "black sleeveless muscle tee, red plaid layered skirt over baggy jeans, converse sneakers, chain bracelet",
+    "vibe": "punk, gender-fluid, bold, edgy",
+    "thumbnail": "/looks/look-005.jpg"
+  },
+  {
+    "id": "look-006",
+    "era": "ROMANCE : UNTOLD — daydream",
+    "date": "2024-12",
+    "label": "romance daydream stage",
+    "hairColor": "black",
+    "hairStyle": "bowl cut with curtain bangs, glasses",
+    "outfit": "grey pinstripe cropped blazer, white shirt, black wide-leg trousers, black loafers, rectangular glasses",
+    "vibe": "dark academia, intellectual, sophisticated",
+    "thumbnail": "/looks/look-006.jpg"
+  },
+  {
+    "id": "look-007",
+    "era": "DESIRE : UNLEASH",
+    "date": "2025-07",
+    "label": "desire unleash — clean",
+    "hairColor": "platinum blonde",
+    "hairStyle": "short, neat, model-off-duty",
+    "outfit": "white sleeveless tank top, black wide-leg trousers, minimalist",
+    "vibe": "model, clean, powerful, minimal",
+    "thumbnail": "/looks/look-007.jpg"
+  },
+  {
+    "id": "look-008",
+    "era": "DESIRE : UNLEASH",
+    "date": "2025-07",
+    "label": "desire unleash — snake",
+    "hairColor": "platinum blonde",
+    "hairStyle": "messy updo, textured",
+    "outfit": "grey draped hood vest over white long sleeve, snake-print wide-leg pants, black belt, rings",
+    "vibe": "avant-garde, reptile, high fashion, fierce",
+    "thumbnail": "/looks/look-008.jpg"
+  }
+]
