@@ -1,4 +1,9 @@
 export const RIKI_PROFILE = {
+  name: {
+    legal: "Nishimura Riki",
+    fanUsed: ["NIKI", "니키", "ニキ"],
+    nameNote: "Fan-made content always uses NIKI / 니키 / ニキ — never 'RIKI'. Use one of these three forms whenever a name appears in a design.",
+  },
   features: ["sharp jawline", "monolid eyes", "lean build", "167cm"],
   aesthetics: ["clean", "cold", "dark academia", "monochrome"],
   colors: ["black", "white", "deep navy", "charcoal grey"],
@@ -14,7 +19,7 @@ export const BADGE_SPECS = {
 export const RIKITO_DOLL_FEATURES = {
   facialFeatures: {
     eyes: "narrow almond-shaped monolid eyes, slightly droopy outer corners, sharp and intense",
-    lips: "notably full/thick lips, slightly pouty, pink tone",
+    lips: "drawn with only 2-3 simple curved lines, NO mouth corners drawn, NO lip corners visible. Upper lip: one gentle M-shaped curve line in soft pink. Lower lip: one slightly fuller curved line below, soft pink or dusty rose. No shading, no highlights, no detailed lip edges, no corners. The pout effect comes from the slight fullness of the lower curve only. In plush/doll style: 2-3 pink embroidery thread lines only, no corner stitches. In chibi illustration: same — just clean curved lines, mouth corners must NOT be drawn. Result should look soft and pouty, never scary, never smirking.",
     nose: "straight bridge, soft tip",
     distinguishingMarks: [
       "mole under LEFT eye (crucial for recognition, especially in animal/object dolls)",
@@ -88,7 +93,7 @@ export const RIKITO_DOLL_FEATURES = {
 export const BADGE_STYLE_SPECS = {
   requiredElements: [
     "subject: idol portrait or chibi illustration as center focus",
-    "text: idol name or nickname included somewhere in the design",
+    "text: idol name included somewhere in the design — use NIKI, 니키, or ニキ (never 'RIKI')",
     "motif: at least one decorative element matching the user's chosen theme",
     "border: a defined edge or frame around the circular badge",
   ],
@@ -115,7 +120,7 @@ export const STICKER_SPECS = {
     "y2k-glitter: holographic stickers, pixel stars, retro gadgets, neon outlines",
   ],
   mustInclude: [
-    "member name in english or japanese",
+    "member name: use NIKI (English), 니키 (Korean), or ニキ (Japanese) — never 'RIKI'",
     "album title or song lyric as text element",
     "at least 3 decorative motifs (stars, hearts, flowers, etc)",
     "polaroid or frame element",

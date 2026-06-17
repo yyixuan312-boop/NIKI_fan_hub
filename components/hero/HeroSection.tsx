@@ -127,7 +127,7 @@ export default function HeroSection() {
             variants={item}
             className="hero-title absolute text-white font-medium text-[14vw] md:text-[13vw] left-4 md:left-10 top-[18%]"
           >
-            NI_KI
+            NI-KI
           </motion.h1>
           <motion.h1
             variants={item}
@@ -143,7 +143,7 @@ export default function HeroSection() {
           </motion.h1>
         </motion.div>
 
-        <p className="absolute left-6 md:left-10 top-[46%] max-w-[240px] text-[15px] leading-snug text-white/90">
+        <p className="absolute left-6 md:left-10 top-[46%] max-w-[240px] text-[20px] leading-snug text-white/70">
           Dance Machine
         </p>
 
@@ -159,18 +159,18 @@ export default function HeroSection() {
 
         <div className="absolute left-6 md:left-20 bottom-20 md:bottom-24">
           <div className="flex items-center gap-3">
-            <span className="text-4xl md:text-5xl font-medium tracking-tight">+4m</span>
+            <span className="text-4xl md:text-5xl font-medium tracking-tight">#1</span>
             <div className="hidden md:block h-px w-24 bg-white/40 rotate-[-20deg]" />
           </div>
-          <p className="text-xs md:text-sm text-white/70 mt-1">followers worldwide</p>
+          <p className="text-xs md:text-sm text-white/70 mt-1">Kpop 4th gen&apos;s #1 main dancer</p>
         </div>
 
         <div className="absolute right-6 md:right-20 bottom-16 md:bottom-20">
           <div className="flex items-center gap-3 justify-end">
             <div className="hidden md:block h-px w-24 bg-white/40 rotate-[-20deg]" />
-            <span className="text-4xl md:text-5xl font-medium tracking-tight">#</span>
+            <span className="text-4xl md:text-5xl font-medium tracking-tight">20M+</span>
           </div>
-          <p className="text-xs md:text-sm text-white/70 mt-1 text-right">#</p>
+          <p className="text-xs md:text-sm text-white/70 mt-1 text-right">group with 20M+ fans across the globe</p>
         </div>
       </div>
     </section>

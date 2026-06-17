@@ -382,61 +382,12 @@ export default function DesignAgentPage() {
     <main className="min-h-screen bg-black text-white px-6 md:px-10 pt-20 pb-16">
       <div className="max-w-4xl mx-auto">
 
-        <div className="flex items-start justify-between mb-2">
+        <div className="mb-2">
           <h1 className="text-3xl md:text-4xl font-medium tracking-tight">design agent</h1>
-          {history.length > 0 && (
-            <button
-              onClick={handleNewDraft}
-              className="text-xs text-neutral-400 hover:text-white transition-colors mt-2 shrink-0"
-            >
-              new draft
-            </button>
-          )}
         </div>
         <p className="text-[15px] leading-snug text-white/70 mb-10">
           describe a fan creative concept and get a design brief + image generation prompt.
         </p>
-
-        {/* Conversation history */}
-        {history.length > 0 && (
-          <div className="space-y-10 mb-12">
-            {history.map((turn, i) => (
-              <div key={i} className="space-y-6" ref={i === history.length - 1 ? latestResultRef : undefined}>
-                <div className="space-y-2">
-                  <span className="text-xs text-neutral-500">
-                    you · {turn.productType}
-                  </span>
-                  <p className="text-[15px] text-white/70">{turn.description}</p>
-                </div>
-
-                <div className="h-px bg-white/10" />
-
-                <div className="grid md:grid-cols-2 gap-6">
-                  <section>
-                    <h2 className="text-base font-medium mb-3">design brief</h2>
-                    <div className="text-[15px] leading-snug text-white/80 whitespace-pre-wrap">
-                      {turn.result.designBrief}
-                    </div>
-                  </section>
-                  <section>
-                    <div className="flex items-center justify-between mb-3">
-                      <h2 className="text-base font-medium">image prompt</h2>
-                      <button
-                        onClick={() => handleCopy(turn.result.imagePrompt, String(i))}
-                        className="text-xs text-neutral-400 hover:text-white transition-colors"
-                      >
-                        {copied === String(i) ? 'copied' : 'copy'}
-                      </button>
-                    </div>
-                    <pre className="bg-neutral-900 text-[13px] text-white/80 rounded p-4 overflow-x-auto whitespace-pre-wrap break-words">
-                      <code>{turn.result.imagePrompt}</code>
-                    </pre>
-                  </section>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
 
         {/* Fan card look selector */}
         <div className="mb-12">
@@ -524,13 +475,66 @@ export default function DesignAgentPage() {
           <p className="text-white/60 text-sm mt-4">{error}</p>
         )}
 
-        {loading && (
-          <div className="animate-pulse space-y-6 mt-10">
-            <p className="text-neutral-500 text-sm">thinking...</p>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-neutral-900 rounded h-48" />
-              <div className="bg-neutral-900 rounded h-48" />
-            </div>
+        {(loading || history.length > 0) && (
+          <div className="mt-10">
+            {history.length > 0 && (
+              <div className="mb-6">
+                <button
+                  onClick={handleNewDraft}
+                  className="text-xs rounded-full px-4 py-1.5 bg-transparent border border-white/20 text-white/60 hover:text-white transition-colors"
+                >
+                  new version
+                </button>
+              </div>
+            )}
+
+            {loading ? (
+              <div className="animate-pulse space-y-6">
+                <p className="text-neutral-500 text-sm">thinking...</p>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="bg-neutral-900 rounded h-48" />
+                  <div className="bg-neutral-900 rounded h-48" />
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-10">
+                {history.map((turn, i) => (
+                  <div key={i} className="space-y-6" ref={i === history.length - 1 ? latestResultRef : undefined}>
+                    <div className="space-y-2">
+                      <span className="text-xs text-neutral-500">
+                        you · {turn.productType}
+                      </span>
+                      <p className="text-[15px] text-white/70">{turn.description}</p>
+                    </div>
+
+                    <div className="h-px bg-white/10" />
+
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <section>
+                        <h2 className="text-base font-medium mb-3">design brief</h2>
+                        <div className="text-[15px] leading-snug text-white/80 whitespace-pre-wrap">
+                          {turn.result.designBrief}
+                        </div>
+                      </section>
+                      <section>
+                        <div className="flex items-center justify-between mb-3">
+                          <h2 className="text-base font-medium">image prompt</h2>
+                          <button
+                            onClick={() => handleCopy(turn.result.imagePrompt, String(i))}
+                            className="text-xs text-neutral-400 hover:text-white transition-colors"
+                          >
+                            {copied === String(i) ? 'copied' : 'copy'}
+                          </button>
+                        </div>
+                        <pre className="bg-neutral-900 text-[13px] text-white/80 rounded p-4 overflow-x-auto whitespace-pre-wrap break-words">
+                          <code>{turn.result.imagePrompt}</code>
+                        </pre>
+                      </section>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 

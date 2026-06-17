@@ -3,7 +3,8 @@ import { RIKI_PROFILE, BADGE_STYLE_SPECS, RIKITO_DOLL_FEATURES, STICKER_SPECS } 
 
 function profileBlock(): string {
   return [
-    `Subject: Riki Nishimura (ENHYPEN)`,
+    `Subject: Nishimura Riki (ENHYPEN)`,
+    `Fan name: ${RIKI_PROFILE.name.fanUsed.join(" / ")} — ${RIKI_PROFILE.name.nameNote}`,
     `Physical features: ${RIKI_PROFILE.features.join(", ")}`,
     `Aesthetic profile: ${RIKI_PROFILE.aesthetics.join(", ")}`,
     `Signature colors: ${RIKI_PROFILE.colors.join(", ")}`,
