@@ -67,6 +67,77 @@ function craftBlock(productType: string): string {
   return ""
 }
 
+const ILLUSTRATION_STYLE_ANCHOR = [
+  `## Global Style Rule (OVERRIDES ALL OTHER STYLE DECISIONS)`,
+  `ALL character art — across every product type — must be illustrated / animated style.`,
+  `NEVER generate photorealistic renders, real-person likeness photos, or photo-editing composites.`,
+  ``,
+  `Two allowed character modes (choose based on user request):`,
+  `1. Humanoid: 2D illustration or chibi anime character — stylized, flat or semi-flat shading, graphic-novel-clean lines`,
+  `2. Animal / creature: cute animal character design — the subject's personality traits transferred to an animal form`,
+  ``,
+  `Forbidden in ALL outputs:`,
+  `- Photorealistic skin, hair, or fabric rendering`,
+  `- Real-person face compositing or photo manipulation`,
+  `- 3D-rendered CGI portraits`,
+  `- Hyperrealistic lighting (subsurface scattering, volumetric rays on faces)`,
+  ``,
+  `Add to every image prompt: "2D illustrated style, NOT photorealistic, graphic art, clean stylized linework"`,
+].join("\n")
+
+const BACKGROUND_COLOR_RULES = [
+  `## Background Color Selection`,
+  `Do NOT default to white or any single fixed color. Analyze the user's concept theme and choose a background that complements it:`,
+  `- cute/pastel concept → soft muted tones (dusty pink, powder blue, sage green)`,
+  `- dark/cool concept → deep charcoal, navy, or near-black`,
+  `- warm/vintage concept → warm beige, amber, burnt orange tones`,
+  `- y2k/bright concept → saturated jewel tones, hot pink, electric blue`,
+  `- nature/seasonal concept → earthy greens, cherry blossom pink, autumn rust`,
+  `Add to every image prompt: "background color: [your auto-selected color based on concept], avoid plain white"`,
+].join("\n")
+
+const COLOR_CONTRAST_RULES = [
+  `## Color Contrast (APPLIES TO ALL PRODUCTS)`,
+  `Keep overall color contrast LOW — muted, soft, harmonious. Never use stark blacks next to pure whites as dominant tones.`,
+  `Prefer: desaturated or pastel palettes, analogous color schemes, toned-down shading.`,
+  `Add to every image prompt: "low contrast palette, soft muted tones, gentle color harmony, no harsh color clashes"`,
+].join("\n")
+
+const DOLL_CUTENESS_RULES = [
+  `## Doll Cuteness Rules (CRITICAL — dolls only)`,
+  `PRIMARY PRINCIPLE: The doll MUST look cute (可爱). It may be "ugly-cute" (丑萌) but must NEVER look scary, uncanny, or unsettling.`,
+  ``,
+  `Mandatory proportions:`,
+  `- Head-to-body ratio: oversized head (head roughly equal to or larger than the body) — classic chibi/plush toy proportions`,
+  `- Body: small, stubby, rounded — limbs are short and chubby`,
+  `- Overall silhouette: round and soft, like a real cotton plush doll`,
+  ``,
+  `Forbidden traits (will make result scary):`,
+  `- Realistic or hyper-detailed skin textures`,
+  `- Naturalistic body proportions (normal head-to-body ratio)`,
+  `- Exaggerated or oversized lips rendered realistically`,
+  `- Uncanny-valley eyes (too realistic or too large on a small face)`,
+  `- Deep shadows, dramatic lighting, or high-contrast rendering`,
+  ``,
+  ``,
+  `## Hair Rule for Animal / Object Forms`,
+  `Animal and object dolls do NOT wear human hairstyles. A duck, dumpling, or bear shape with a full black human hairdo looks wrong and ugly.`,
+  `- Default: NO hair. The animal/object silhouette speaks for itself.`,
+  `- Exception: if the subject's hairstyle has a very distinctive shape (e.g. a sharp comma bang, a signature curtain-part), suggest it with ONE small minimalist curve or swoosh line drawn lightly on the head — do not render full hair volume or color blocks.`,
+  `- Add to animal/object doll prompts: "no human hairstyle on animal form, at most a single small suggestive hair curve if hairstyle is iconic, clean scalp silhouette otherwise"`,
+  ``,
+  `Add to every doll image prompt: "chibi plush doll style, oversized round head, small chubby body, soft embroidered-fabric look, adorable and non-threatening, kawaii aesthetic, matte flat lighting, low contrast soft palette"`,
+].join("\n")
+
+const FACIAL_FEATURES_MANDATORY = [
+  `## Mandatory Facial Features (ALL Character Designs)`,
+  `Include this in every image generation prompt, verbatim:`,
+  `"character must have: elongated narrow monolid eyes, notably thick full lips, short compact face shape, one small mole positioned below the outer corner of the LEFT eye (not under both eyes), one small mole on the chin center. Total: exactly 2 moles, one under left eye only, one on chin. Do NOT add moles elsewhere. No need to emphasize eyebrows — keep them natural."`,
+  ``,
+  `For animal/object dolls, additionally include:`,
+  `"even in [animal type] form, preserve: thick lips, narrow slit eyes, mole under left eye, mole on chin"`,
+].join("\n")
+
 const OUTPUT_FORMAT = [
   ``,
   `## Output Format`,
@@ -77,6 +148,7 @@ const OUTPUT_FORMAT = [
   ``,
   `### Image Generation Prompt`,
   `A single-paragraph prompt optimized for image generation models. Include subject description, style, lighting, color palette, and technical modifiers.`,
+  `Apply the background color selection rules and mandatory facial features rules above.`,
 ].join("\n")
 
 export function buildSystemPrompt(productType: string): string {
@@ -93,6 +165,13 @@ export function buildSystemPrompt(productType: string): string {
     sections.push(``, `## Craft Specifications`, craft)
   }
 
+  sections.push(``, ILLUSTRATION_STYLE_ANCHOR)
+  sections.push(``, BACKGROUND_COLOR_RULES)
+  sections.push(``, COLOR_CONTRAST_RULES)
+  if (productType === "doll") {
+    sections.push(``, DOLL_CUTENESS_RULES)
+  }
+  sections.push(``, FACIAL_FEATURES_MANDATORY)
   sections.push(OUTPUT_FORMAT)
   return sections.join("\n")
 }
@@ -115,6 +194,13 @@ export function buildPrompt(intent: AgentIntent, userInput: string): string {
     sections.push(``, `## Craft Specifications`, craft)
   }
 
+  sections.push(``, ILLUSTRATION_STYLE_ANCHOR)
+  sections.push(``, BACKGROUND_COLOR_RULES)
+  sections.push(``, COLOR_CONTRAST_RULES)
+  if (intent === "doll") {
+    sections.push(``, DOLL_CUTENESS_RULES)
+  }
+  sections.push(``, FACIAL_FEATURES_MANDATORY)
   sections.push(OUTPUT_FORMAT)
   return sections.join("\n")
 }
