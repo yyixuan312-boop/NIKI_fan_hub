@@ -23,6 +23,7 @@ type ProductType = (typeof PRODUCT_TYPES)[number]
 interface AgentResult {
   imagePrompt: string
   imageUrl: string | null
+  imageLoading?: boolean
 }
 
 interface Turn {
@@ -346,12 +347,11 @@ export default function DesignAgentPage() {
       const res = await fetch('/api/agent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        signal: AbortSignal.timeout(120_000),
+        signal: AbortSignal.timeout(60_000),
         body: JSON.stringify({
           productType: effectiveProductType,
           description: [description.trim(), lookContext].filter(Boolean).join('\n\n'),
           messages,
-          referenceImageUrl,
         }),
       })
 
@@ -360,17 +360,46 @@ export default function DesignAgentPage() {
         throw new Error(errBody?.error ?? `request failed (${res.status})`)
       }
 
-      const data = (await res.json()) as AgentResult
+      const { imagePrompt } = (await res.json()) as { imagePrompt: string }
+      const turnIndex = history.length
       setHistory((prev) => [
         ...prev,
         {
           productType: effectiveProductType,
           description: description.trim(),
-          result: data,
+          result: { imagePrompt, imageUrl: null, imageLoading: true },
         },
       ])
       setDescription('')
+      setLoading(false)
       setTimeout(() => latestResultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50)
+
+      // Generate image independently — doesn't block text display
+      fetch('/api/generate-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        signal: AbortSignal.timeout(90_000),
+        body: JSON.stringify({
+          prompt: imagePrompt.replace(/\*\*/g, ''),
+          referenceImageUrl,
+        }),
+      })
+        .then((r) => r.json())
+        .then(({ imageUrl }: { imageUrl: string | null }) => {
+          setHistory((prev) =>
+            prev.map((t, i) =>
+              i === turnIndex ? { ...t, result: { ...t.result, imageUrl, imageLoading: false } } : t
+            )
+          )
+        })
+        .catch(() => {
+          setHistory((prev) =>
+            prev.map((t, i) =>
+              i === turnIndex ? { ...t, result: { ...t.result, imageLoading: false } } : t
+            )
+          )
+        })
+      return
     } catch (err) {
       setError(err instanceof Error ? err.message : 'something went wrong — try again')
     } finally {
@@ -543,7 +572,11 @@ export default function DesignAgentPage() {
                           />
                         ) : (
                           <div className="w-full aspect-square rounded-xl border border-white/10 bg-neutral-900 flex items-center justify-center">
-                            <p className="text-xs text-white/30">image generation failed</p>
+                            {turn.result.imageLoading ? (
+                              <p className="text-xs text-white/30 animate-pulse">generating image…</p>
+                            ) : (
+                              <p className="text-xs text-white/30">image generation failed</p>
+                            )}
                           </div>
                         )}
                       </section>

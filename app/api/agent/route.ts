@@ -1,7 +1,6 @@
 import { buildSystemPrompt } from "@/lib/agent/promptBuilder"
-import { generateImage } from "@/lib/agent/imageGen"
 
-export const maxDuration = 60
+export const maxDuration = 30
 
 interface ClientMessage {
   role: "user" | "assistant"
@@ -43,7 +42,6 @@ export async function POST(request: Request): Promise<Response> {
   let productType: string
   let description: string
   let history: ClientMessage[]
-  let referenceImageUrl: string | undefined
 
   try {
     const body = await request.json() as Record<string, unknown>
@@ -57,7 +55,6 @@ export async function POST(request: Request): Promise<Response> {
 
     productType = body.productType.trim()
     description = body.description.trim()
-    referenceImageUrl = typeof body.referenceImageUrl === "string" ? body.referenceImageUrl : undefined
 
     history = Array.isArray(body.messages)
       ? (body.messages as unknown[]).filter(isClientMessage)
@@ -102,14 +99,5 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   const { imagePrompt } = parseOutput(raw)
-
-  let imageUrl: string | null = null
-  try {
-    const plainPrompt = imagePrompt.replace(/\*\*/g, "")
-    imageUrl = await generateImage({ prompt: plainPrompt, referenceImageUrl })
-  } catch (err) {
-    console.error("Image generation failed (non-fatal):", err)
-  }
-
-  return Response.json({ imagePrompt, imageUrl })
+  return Response.json({ imagePrompt })
 }
