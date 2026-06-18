@@ -15,13 +15,10 @@ interface DeepSeekResponse {
   choices: Array<{ message: { role: string; content: string } }>
 }
 
-function parseOutput(raw: string): { designBrief: string; imagePrompt: string } {
-  const briefMatch = raw.match(/###\s*Design Brief\s*\n([\s\S]*?)(?=###\s*Image Generation Prompt|$)/)
+function parseOutput(raw: string): { imagePrompt: string } {
   const promptMatch = raw.match(/###\s*Image Generation Prompt\s*\n([\s\S]*)/)
-
   return {
-    designBrief: briefMatch?.[1]?.trim() ?? raw.trim(),
-    imagePrompt: promptMatch?.[1]?.trim() ?? "",
+    imagePrompt: promptMatch?.[1]?.trim() ?? raw.trim(),
   }
 }
 
@@ -102,14 +99,15 @@ export async function POST(request: Request): Promise<Response> {
     return Response.json({ error: "Failed to reach upstream API" }, { status: 502 })
   }
 
-  const { designBrief, imagePrompt } = parseOutput(raw)
+  const { imagePrompt } = parseOutput(raw)
 
   let imageUrl: string | null = null
   try {
-    imageUrl = await generateImage({ prompt: imagePrompt, referenceImageUrl })
+    const plainPrompt = imagePrompt.replace(/\*\*/g, "")
+    imageUrl = await generateImage({ prompt: plainPrompt, referenceImageUrl })
   } catch (err) {
     console.error("Image generation failed (non-fatal):", err)
   }
 
-  return Response.json({ designBrief, imagePrompt, imageUrl })
+  return Response.json({ imagePrompt, imageUrl })
 }

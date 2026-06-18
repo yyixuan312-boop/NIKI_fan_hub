@@ -21,7 +21,6 @@ const PRODUCT_TYPES = ['badge', 'doll', 'cartoon', 'sticker', 'other'] as const
 type ProductType = (typeof PRODUCT_TYPES)[number]
 
 interface AgentResult {
-  designBrief: string
   imagePrompt: string
   imageUrl: string | null
 }
@@ -335,7 +334,7 @@ export default function DesignAgentPage() {
       },
       {
         role: 'assistant',
-        content: `### Design Brief\n${turn.result.designBrief}\n\n### Image Generation Prompt\n${turn.result.imagePrompt}`,
+        content: `### Image Generation Prompt\n${turn.result.imagePrompt}`,
       },
     ])
 
@@ -518,33 +517,35 @@ export default function DesignAgentPage() {
 
                     <div className="grid md:grid-cols-2 gap-6">
                       <section>
-                        <h2 className="text-base font-medium mb-3">design brief</h2>
-                        <div className="text-[15px] leading-snug text-white/80 whitespace-pre-wrap">
-                          {turn.result.designBrief}
-                        </div>
-                      </section>
-                      <section>
-                        {turn.result.imageUrl && (
-                          <div className="mb-4">
-                            <img
-                              src={turn.result.imageUrl}
-                              alt="generated design"
-                              className="w-full rounded-xl border border-white/10 object-cover"
-                            />
-                          </div>
-                        )}
                         <div className="flex items-center justify-between mb-3">
                           <h2 className="text-base font-medium">image prompt</h2>
                           <button
-                            onClick={() => handleCopy(turn.result.imagePrompt, String(i))}
+                            onClick={() => handleCopy(turn.result.imagePrompt.replace(/\*\*/g, ''), String(i))}
                             className="text-xs text-neutral-400 hover:text-white transition-colors"
                           >
                             {copied === String(i) ? 'copied' : 'copy'}
                           </button>
                         </div>
-                        <pre className="bg-neutral-900 text-[13px] text-white/80 rounded p-4 overflow-x-auto whitespace-pre-wrap break-words">
-                          <code>{turn.result.imagePrompt}</code>
-                        </pre>
+                        <p className="bg-neutral-900 text-[13px] text-white/70 rounded p-4 leading-relaxed whitespace-pre-wrap break-words">
+                          {turn.result.imagePrompt.split(/\*\*([^*]+)\*\*/g).map((part, j) =>
+                            j % 2 === 1
+                              ? <strong key={j} className="text-white font-semibold">{part}</strong>
+                              : part
+                          )}
+                        </p>
+                      </section>
+                      <section>
+                        {turn.result.imageUrl ? (
+                          <img
+                            src={turn.result.imageUrl}
+                            alt="generated design"
+                            className="w-full rounded-xl border border-white/10 object-cover"
+                          />
+                        ) : (
+                          <div className="w-full aspect-square rounded-xl border border-white/10 bg-neutral-900 flex items-center justify-center">
+                            <p className="text-xs text-white/30">image generation failed</p>
+                          </div>
+                        )}
                       </section>
                     </div>
                   </div>

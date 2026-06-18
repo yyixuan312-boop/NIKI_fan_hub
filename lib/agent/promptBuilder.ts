@@ -142,14 +142,12 @@ const FACIAL_FEATURES_MANDATORY = [
 const OUTPUT_FORMAT = [
   ``,
   `## Output Format`,
-  `Always respond with exactly two sections:`,
-  ``,
-  `### Design Brief`,
-  `A structured description of the design concept (composition, mood, colors, era reference, key visual elements). 3–5 bullet points.`,
+  `Always respond with exactly one section:`,
   ``,
   `### Image Generation Prompt`,
   `A single-paragraph prompt optimized for image generation models. Include subject description, style, lighting, color palette, and technical modifiers.`,
   `Apply the background color selection rules and mandatory facial features rules above.`,
+  `Wrap the most critical visual keywords in **bold** (e.g. **chibi style**, **mole under left eye**, **circular badge**) so readers can scan key features at a glance. Bold 6–10 terms maximum.`,
 ].join("\n")
 
 export function buildSystemPrompt(productType: string): string {
