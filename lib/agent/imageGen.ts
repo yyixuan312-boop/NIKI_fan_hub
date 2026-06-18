@@ -43,12 +43,5 @@ export async function generateImage({
   const data = (await res.json()) as { data: Array<{ url: string }> }
   const url = data.data?.[0]?.url
   if (!url) throw new Error("No image URL in Agnes response")
-
-  // Proxy the image through our server so the browser doesn't need to reach Agnes's CDN directly
-  const imgRes = await fetch(url, { signal: AbortSignal.timeout(30_000) })
-  if (!imgRes.ok) throw new Error(`Failed to fetch generated image: ${imgRes.status}`)
-  const buffer = await imgRes.arrayBuffer()
-  const base64 = Buffer.from(buffer).toString("base64")
-  const contentType = imgRes.headers.get("content-type") ?? "image/png"
-  return `data:${contentType};base64,${base64}`
+  return url
 }
