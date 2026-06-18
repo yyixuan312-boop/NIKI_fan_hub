@@ -23,6 +23,7 @@ type ProductType = (typeof PRODUCT_TYPES)[number]
 interface AgentResult {
   designBrief: string
   imagePrompt: string
+  imageUrl: string | null
 }
 
 interface Turn {
@@ -339,13 +340,19 @@ export default function DesignAgentPage() {
     ])
 
     try {
+      const referenceImageUrl = selectedLook
+        ? `${window.location.origin}${selectedLook.thumbnail}`
+        : undefined
+
       const res = await fetch('/api/agent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        signal: AbortSignal.timeout(120_000),
         body: JSON.stringify({
           productType: effectiveProductType,
           description: [description.trim(), lookContext].filter(Boolean).join('\n\n'),
           messages,
+          referenceImageUrl,
         }),
       })
 
@@ -490,7 +497,7 @@ export default function DesignAgentPage() {
 
             {loading ? (
               <div className="animate-pulse space-y-6">
-                <p className="text-neutral-500 text-sm">thinking...</p>
+                <p className="text-neutral-500 text-sm">thinking + generating image…</p>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="bg-neutral-900 rounded h-48" />
                   <div className="bg-neutral-900 rounded h-48" />
@@ -517,6 +524,15 @@ export default function DesignAgentPage() {
                         </div>
                       </section>
                       <section>
+                        {turn.result.imageUrl && (
+                          <div className="mb-4">
+                            <img
+                              src={turn.result.imageUrl}
+                              alt="generated design"
+                              className="w-full rounded-xl border border-white/10 object-cover"
+                            />
+                          </div>
+                        )}
                         <div className="flex items-center justify-between mb-3">
                           <h2 className="text-base font-medium">image prompt</h2>
                           <button
