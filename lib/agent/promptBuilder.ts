@@ -143,7 +143,7 @@ const DOLL_CUTENESS_RULES = [
 const FACIAL_FEATURES_MANDATORY = [
   `## Mandatory Facial Features (ALL Character Designs)`,
   `Include this in every image generation prompt, verbatim:`,
-  `"character must have: elongated narrow monolid eyes, lips drawn as 2–3 simple soft curved lines in light pink only — NO mouth corners, NO lip outlines, NO dark color, upper lip one gentle M-curve in pale pink, lower lip one slightly fuller pale pink curve below, soft and pouty not exaggerated. Short compact face shape. One small mole below the outer corner of the LEFT eye only. One small subtle mole slightly left of center on the chin — NOT centered, NOT large. Exactly 2 moles total. No other moles. Natural eyebrows, not emphasized."`,
+  `"character must have: elongated narrow monolid eyes, lips drawn as 2–3 simple soft curved lines in light pink only — NO mouth corners, NO lip outlines, NO dark color, upper lip one simple gentle round arc in pale pink, lower lip one slightly fuller round arc below, both are plain smooth curves — NO M-shape, NO Cupid's bow, NO corners, soft and minimal. Short compact face shape. One small mole below the outer corner of the LEFT eye only. One small subtle mole slightly left of center on the chin — NOT centered, NOT large. Exactly 2 moles total. No other moles. Natural eyebrows, not emphasized."`,
   ``,
   `For animal/object dolls, additionally include:`,
   `"even in [animal/object] form, preserve: narrow slit eyes, soft pale pink lip lines (2–3 curves, no corners), mole under left eye, small chin mole slightly left of center"`,

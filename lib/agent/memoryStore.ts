@@ -19,7 +19,7 @@ export const BADGE_SPECS = {
 export const RIKITO_DOLL_FEATURES = {
   facialFeatures: {
     eyes: "narrow almond-shaped monolid eyes, slightly droopy outer corners, sharp and intense",
-    lips: "drawn with only 2-3 simple curved lines, NO mouth corners drawn, NO lip corners visible. Upper lip: one gentle M-shaped curve line in soft pink. Lower lip: one slightly fuller curved line below, soft pink or dusty rose. No shading, no highlights, no detailed lip edges, no corners. The pout effect comes from the slight fullness of the lower curve only. In plush/doll style: 2-3 pink embroidery thread lines only, no corner stitches. In chibi illustration: same — just clean curved lines, mouth corners must NOT be drawn. Result should look soft and pouty, never scary, never smirking.",
+    lips: "drawn with only 2-3 simple round arc lines in pale pink — NO M-shape, NO Cupid's bow, NO corners, NO mouth corners visible. Upper lip: one simple smooth round arc in pale pink. Lower lip: one slightly fuller smooth round arc below in pale pink. Both arcs are plain gentle curves, nothing angular. No shading, no highlights, no detailed lip edges. In plush/doll style: 2-3 pale pink embroidery thread round arcs only, no corner stitches. In chibi illustration: same plain smooth arcs. Result should look soft, minimal, and cute — never exaggerated, never dark.",
     nose: "straight bridge, soft tip",
     distinguishingMarks: [
       "mole under LEFT eye (crucial for recognition, especially in animal/object dolls)",
