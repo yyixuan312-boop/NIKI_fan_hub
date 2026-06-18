@@ -1,6 +1,8 @@
 import { buildSystemPrompt } from "@/lib/agent/promptBuilder"
 import { generateImage } from "@/lib/agent/imageGen"
 
+export const maxDuration = 60
+
 interface ClientMessage {
   role: "user" | "assistant"
   content: string
