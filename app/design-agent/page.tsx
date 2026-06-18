@@ -24,6 +24,7 @@ interface AgentResult {
   imagePrompt: string
   imageUrl: string | null
   imageLoading?: boolean
+  imageError?: string | null
 }
 
 interface Turn {
@@ -385,14 +386,16 @@ export default function DesignAgentPage() {
         }),
       })
         .then((r) => r.json())
-        .then(({ imageUrl }: { imageUrl: string | null }) => {
+        .then(({ imageUrl, error }: { imageUrl: string | null; error?: string }) => {
+          if (error) console.error('generate-image error:', error)
           setHistory((prev) =>
             prev.map((t, i) =>
-              i === turnIndex ? { ...t, result: { ...t.result, imageUrl, imageLoading: false } } : t
+              i === turnIndex ? { ...t, result: { ...t.result, imageUrl, imageLoading: false, imageError: error ?? null } } : t
             )
           )
         })
-        .catch(() => {
+        .catch((err) => {
+          console.error('generate-image fetch failed:', err)
           setHistory((prev) =>
             prev.map((t, i) =>
               i === turnIndex ? { ...t, result: { ...t.result, imageLoading: false } } : t
@@ -575,7 +578,9 @@ export default function DesignAgentPage() {
                             {turn.result.imageLoading ? (
                               <p className="text-xs text-white/30 animate-pulse">generating image…</p>
                             ) : (
-                              <p className="text-xs text-white/30">image generation failed</p>
+                              <p className="text-xs text-white/30">
+                                {turn.result.imageError ?? 'image generation failed'}
+                              </p>
                             )}
                           </div>
                         )}

@@ -21,7 +21,8 @@ export async function POST(request: Request): Promise<Response> {
     const imageUrl = await generateImage({ prompt, referenceImageUrl })
     return Response.json({ imageUrl })
   } catch (err) {
-    console.error("Image generation failed:", err)
-    return Response.json({ imageUrl: null })
+    const message = err instanceof Error ? err.message : String(err)
+    console.error("Image generation failed:", message)
+    return Response.json({ imageUrl: null, error: message })
   }
 }
