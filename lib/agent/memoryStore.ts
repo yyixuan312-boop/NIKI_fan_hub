@@ -65,6 +65,11 @@ export const RIKITO_DOLL_FEATURES = {
         faceNote: "tiny face on dumpling surface, mole under left eye is key identifier",
       },
       {
+        type: "steamed bun / baozi (包子塑)",
+        shape: "round puffy bao body — the whole character body IS the bun shape, with a pleated top",
+        faceNote: "simple face drawn directly on the bun surface: narrow eyes, thick lips, mole under left eye. Add tiny stubby arms and legs. Do NOT draw a human character holding a bun — the CHARACTER IS the bun.",
+      },
+      {
         type: "monkey (猴子塑)",
         shape: "round monkey head + small body",
         faceNote: "narrow eyes + full lips + moles on simplified round face",

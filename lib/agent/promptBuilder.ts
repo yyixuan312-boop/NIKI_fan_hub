@@ -121,6 +121,14 @@ const DOLL_CUTENESS_RULES = [
   `- Deep shadows, dramatic lighting, or high-contrast rendering`,
   ``,
   ``,
+  `## Object/Food-Shaped Character Rule (CRITICAL)`,
+  `When the user requests a "[object]-shaped character" (X塑, e.g. 包子塑, 饺子塑), the CHARACTER'S BODY IS THAT OBJECT SHAPE.`,
+  `- The whole body silhouette = the object (e.g. a round puffy steamed bun)`,
+  `- A simple kawaii face is drawn DIRECTLY ON the object surface`,
+  `- Add tiny stubby limbs (arms, legs) attached to the object body`,
+  `- NEVER draw a human/chibi character that is merely holding or interacting with the object`,
+  `- Add to prompt: "[object] body shape character, the character body IS a [object], face drawn on surface, tiny limbs"`,
+  ``,
   `## Hair Rule for Animal / Object Forms`,
   `Animal and object dolls do NOT wear human hairstyles. A duck, dumpling, or bear shape with a full black human hairdo looks wrong and ugly.`,
   `- Default: NO hair. The animal/object silhouette speaks for itself.`,
@@ -133,10 +141,10 @@ const DOLL_CUTENESS_RULES = [
 const FACIAL_FEATURES_MANDATORY = [
   `## Mandatory Facial Features (ALL Character Designs)`,
   `Include this in every image generation prompt, verbatim:`,
-  `"character must have: elongated narrow monolid eyes, notably thick full lips, short compact face shape, one small mole positioned below the outer corner of the LEFT eye (not under both eyes), one small mole on the chin center. Total: exactly 2 moles, one under left eye only, one on chin. Do NOT add moles elsewhere. No need to emphasize eyebrows — keep them natural."`,
+  `"character must have: elongated narrow monolid eyes, notably thick full lips, short compact face shape, one small mole positioned below the outer corner of the LEFT eye (not under both eyes), one small subtle mole slightly left of center on the chin — NOT centered, NOT oversized. Total: exactly 2 moles, one under left eye only, one on chin slightly left of center. Do NOT add moles elsewhere. No need to emphasize eyebrows — keep them natural."`,
   ``,
   `For animal/object dolls, additionally include:`,
-  `"even in [animal type] form, preserve: thick lips, narrow slit eyes, mole under left eye, mole on chin"`,
+  `"even in [animal/object] form, preserve: thick lips, narrow slit eyes, mole under left eye, small mole slightly left of center on chin"`,
 ].join("\n")
 
 const OUTPUT_FORMAT = [
