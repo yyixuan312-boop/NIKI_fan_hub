@@ -35,7 +35,7 @@ export default function VideoGrid({ videos }: Props) {
       {filtered.length === 0 ? (
         <p className="text-neutral-500 text-sm text-center py-16">nothing here yet — check back soon</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
+        <div className="grid gap-4 md:gap-6 justify-start [grid-template-columns:repeat(auto-fill,minmax(280px,340px))]">
           {filtered.map((video) => (
             <VideoCard key={video.id} video={video} />
           ))}
