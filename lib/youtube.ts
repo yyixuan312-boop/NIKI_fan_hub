@@ -71,7 +71,7 @@ export async function fetchVideoMeta(videoId: string): Promise<YouTubeVideoMeta>
 
 function inferVideoCategory(title: string, publishedAt: string): string {
   if (/cover|커버/i.test(title)) return 'Cover'
-  if (/gayo|joint stage/i.test(title)) return 'Joint Stage'
+  if (/gayo|joint stage|weverse con|위버스콘|concert/i.test(title)) return 'Joint Stage'
   const year = parseInt(publishedAt.slice(0, 4))
   return year <= 2024 ? '2nd Full Album' : 'mini 6'
 }
@@ -112,6 +112,11 @@ async function _searchNikiVideos(): Promise<Video[]> {
         title: string
         channelTitle: string
         publishedAt: string
+        thumbnails: {
+          maxres?: { url: string }
+          high?: { url: string }
+          medium?: { url: string }
+        }
       }
       contentDetails: { duration: string }
     }>
@@ -121,6 +126,9 @@ async function _searchNikiVideos(): Promise<Video[]> {
     id: `yt-${item.id}`,
     title: item.snippet.title,
     youtubeId: item.id,
+    thumbnail: item.snippet.thumbnails.maxres?.url
+      ?? item.snippet.thumbnails.high?.url
+      ?? item.snippet.thumbnails.medium?.url,
     category: inferVideoCategory(item.snippet.title, item.snippet.publishedAt),
     channelName: item.snippet.channelTitle,
     date: item.snippet.publishedAt.slice(0, 10),
