@@ -1,7 +1,7 @@
 import { buildSystemPrompt } from "@/lib/agent/promptBuilder"
 import { searchWeb } from "@/lib/agent/search"
 
-export const maxDuration = 30
+export const maxDuration = 60
 
 interface ClientMessage {
   role: "user" | "assistant"
@@ -107,7 +107,7 @@ export async function POST(request: Request): Promise<Response> {
   })
 
   // Agent loop — DeepSeek can call search_web before writing the final prompt
-  const MAX_TURNS = 5
+  const MAX_TURNS = 3
   let raw = ""
 
   for (let turn = 0; turn < MAX_TURNS; turn++) {
@@ -125,6 +125,7 @@ export async function POST(request: Request): Promise<Response> {
           tools: TOOLS,
           tool_choice: "auto",
         }),
+        signal: AbortSignal.timeout(25_000),
       })
     } catch (err) {
       console.error("DeepSeek fetch failed:", err)
