@@ -42,17 +42,17 @@ const UNITS: Unit[] = [
 export default function ProfilePage() {
   return (
     <div className="relative bg-black min-h-screen">
-      {/* Background portrait */}
-      <div className="fixed inset-0 pointer-events-none select-none">
+      {/* Desktop: portrait pinned to right half, fades into black on left edge */}
+      <div className="fixed top-0 right-0 h-full w-1/2 pointer-events-none select-none overflow-hidden hidden md:block">
         <Image
           src="/profile-bg.jpg"
           alt=""
           fill
-          className="object-cover object-[center_10%] opacity-45"
+          className="object-cover object-top opacity-80"
           priority
         />
-        {/* Left-side gradient so text stays readable */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/30 to-transparent" />
+        {/* Gradient: blends image into the black text area */}
+        <div className="absolute inset-y-0 left-0 w-2/5 bg-gradient-to-r from-black to-transparent" />
       </div>
 
       <main className="relative z-10 px-6 md:px-10 py-16 md:py-24 max-w-7xl mx-auto">
