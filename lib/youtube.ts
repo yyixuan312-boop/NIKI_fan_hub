@@ -139,5 +139,5 @@ async function _searchNikiVideos(): Promise<Video[]> {
 export const searchNikiVideos = unstable_cache(
   _searchNikiVideos,
   ['niki-youtube-search'],
-  { revalidate: 3600, tags: ['youtube-videos'] }
+  { revalidate: 86400, tags: ['youtube-videos'] }
 )
