@@ -208,5 +208,75 @@
     "channelName": "enhypen",
     "date": "2026-04-25",
     "durationLabel": "3:52"
+  },
+  {
+    "id": "weverselive-022",
+    "title": "XO_UnfilteredCam_StudioChoom",
+    "youtubeId": "9p-LtIayv4o&list=RD9p-LtIayv4o&start_radio=1",
+    "thumbnail": "/videos/XO_UnfilteredCam_StudioChoom.jpg",
+    "category": "2nd Full Album",
+    "channelName": "STUDIO CHOOM [스튜디오 춤]",
+    "date": "2024-07-15",
+    "durationLabel": "3:24"
+  },
+  {
+    "id": "weverselive-023",
+    "title": "XO_MusicCore_BestFanCam_240713",
+    "youtubeId": "WD8nJzza4CE&list=RDWD8nJzza4CE&start_radio=1",
+    "thumbnail": "/videos/XO_MusicCore_BestFanCam_240713.jpg",
+    "category": "2nd Full Album",
+    "channelName": "MBCkpop",
+    "date": "2024-07-13",
+    "durationLabel": "3:37"
+  },
+  {
+    "id": "weverselive-024",
+    "title": "XO_MusicBank_FanCam_240712",
+    "youtubeId": "zQC2m0nCMvk&list=RDzQC2m0nCMvk&start_radio=1",
+    "thumbnail": "/videos/XO_MusicBank_FanCam_240712.jpg",
+    "category": "2nd Full Album",
+    "channelName": "KBS Kpop",
+    "date": "2024-07-12",
+    "durationLabel": "3:34"
+  },
+  {
+    "id": "weverselive-025",
+    "title": "XO_Mcountdown_MPDFanCam_240718",
+    "youtubeId": "49vWpKDh8pg&list=RD49vWpKDh8pg&start_radio=1",
+    "thumbnail": "/videos/XO_Mcountdown_MPDFanCam_240718.jpg",
+    "category": "2nd Full Album",
+    "channelName": "M2",
+    "date": "2024-07-18",
+    "durationLabel": "3:33"
+  },
+  {
+    "id": "weverselive-026",
+    "title": "XO_Mcountdown_MeltinFanCam_240718",
+    "youtubeId": "kIMeISqlgYo&list=RDkIMeISqlgYo&start_radio=1",
+    "thumbnail": "/videos/XO_Mcountdown_MeltinFanCam_240718.jpg",
+    "category": "2nd Full Album",
+    "channelName": "M2",
+    "date": "2024-07-18",
+    "durationLabel": "4:58"
+  },
+  {
+    "id": "weverselive-027",
+    "title": "XO_NikiFocus_FanCam_240712",
+    "youtubeId": "wjiXWQZWl9k&list=RDwjiXWQZWl9k&start_radio=1",
+    "thumbnail": "/videos/XO_NikiFocus_FanCam_240712.jpg",
+    "category": "2nd Full Album",
+    "channelName": "zero.",
+    "date": "2024-07-12",
+    "durationLabel": "3:36"
+  },
+  {
+    "id": "weverselive-028",
+    "title": "GayoDaejeonSummer_INTRO_XO_FanCam_240726",
+    "youtubeId": "zGA0XgUqflk&list=RDzGA0XgUqflk&start_radio=1",
+    "thumbnail": "/videos/GayoDaejeonSummer_INTRO_XO_FanCam_240726.jpg",
+    "category": "Joint Stage",
+    "channelName": "SBSKPOP ZOOM",
+    "date": "2024-07-26",
+    "durationLabel": "3:25"
   }
 ]
