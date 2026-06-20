@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import SectionHeader from '@/components/ui/SectionHeader'
 
 interface ProfileFact {
@@ -40,48 +41,63 @@ const UNITS: Unit[] = [
 
 export default function ProfilePage() {
   return (
-    <main className="bg-black min-h-screen px-6 md:px-10 py-16 md:py-24 max-w-7xl mx-auto">
-      <SectionHeader title="profile" lastUpdated={LAST_UPDATED} />
+    <div className="relative bg-black min-h-screen">
+      {/* Background portrait */}
+      <div className="fixed inset-0 pointer-events-none select-none">
+        <Image
+          src="/profile-bg.jpg"
+          alt=""
+          fill
+          className="object-cover object-[center_10%] opacity-45"
+          priority
+        />
+        {/* Left-side gradient so text stays readable */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/30 to-transparent" />
+      </div>
 
-      <section className="max-w-2xl">
-        <p className="text-[15px] leading-snug text-white/90">{BIO}</p>
-      </section>
+      <main className="relative z-10 px-6 md:px-10 py-16 md:py-24 max-w-7xl mx-auto">
+        <SectionHeader title="profile" lastUpdated={LAST_UPDATED} />
 
-      <section className="mt-12 md:mt-16 max-w-2xl">
-        <h2 className="text-xl font-medium tracking-tight mb-6">facts</h2>
-        <dl className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-0">
-          {PROFILE_FACTS.map(({ label, value }) => (
-            <div key={label} className="flex flex-col border-b border-white/10 py-4">
-              <dt className="text-xs text-neutral-400">{label}</dt>
-              <dd className="text-base font-medium text-white mt-0.5">{value}</dd>
-            </div>
-          ))}
-        </dl>
-      </section>
+        <section className="max-w-2xl">
+          <p className="text-[15px] leading-snug text-white/90">{BIO}</p>
+        </section>
 
-      <section className="mt-12 md:mt-16 max-w-2xl">
-        <h2 className="text-xl font-medium tracking-tight mb-6">units</h2>
-        <div className="space-y-0">
-          {UNITS.map((unit) => (
-            <div key={unit.name} className="border-b border-white/10 py-4">
-              <p className="text-base font-medium text-white">{unit.name}</p>
-              <p className="text-[15px] leading-snug text-white/70 mt-1">{unit.description}</p>
-              <a
-                href={unit.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs text-white/50 hover:text-white transition-colors mt-2 inline-block"
-              >
-                weverse →
-              </a>
-            </div>
-          ))}
-        </div>
-      </section>
+        <section className="mt-12 md:mt-16 max-w-2xl">
+          <h2 className="text-xl font-medium tracking-tight mb-6">facts</h2>
+          <dl className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-0">
+            {PROFILE_FACTS.map(({ label, value }) => (
+              <div key={label} className="flex flex-col border-b border-white/10 py-4">
+                <dt className="text-xs text-neutral-400">{label}</dt>
+                <dd className="text-base font-medium text-white mt-0.5">{value}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
 
-      <p className="mt-16 text-xs text-neutral-500 max-w-2xl">
-        information sourced from official hybe / belift lab channels, weverse, and public records.
-      </p>
-    </main>
+        <section className="mt-12 md:mt-16 max-w-2xl">
+          <h2 className="text-xl font-medium tracking-tight mb-6">units</h2>
+          <div className="space-y-0">
+            {UNITS.map((unit) => (
+              <div key={unit.name} className="border-b border-white/10 py-4">
+                <p className="text-base font-medium text-white">{unit.name}</p>
+                <p className="text-[15px] leading-snug text-white/70 mt-1">{unit.description}</p>
+                <a
+                  href={unit.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-white/50 hover:text-white transition-colors mt-2 inline-block"
+                >
+                  weverse →
+                </a>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <p className="mt-16 text-xs text-neutral-500 max-w-2xl">
+          information sourced from official hybe / belift lab channels, weverse, and public records.
+        </p>
+      </main>
+    </div>
   )
 }
