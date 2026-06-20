@@ -1,4 +1,5 @@
 import { buildSystemPrompt } from "@/lib/agent/promptBuilder"
+import { searchWeb } from "@/lib/agent/search"
 
 export const maxDuration = 30
 
@@ -7,14 +8,44 @@ interface ClientMessage {
   content: string
 }
 
-interface DeepSeekMessage {
-  role: "system" | "user" | "assistant"
-  content: string
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AnyMessage = Record<string, any>
+
+interface ToolCall {
+  id: string
+  function: { name: string; arguments: string }
+}
+
+interface DeepSeekChoice {
+  finish_reason: string
+  message: {
+    role: string
+    content: string | null
+    tool_calls?: ToolCall[]
+  }
 }
 
 interface DeepSeekResponse {
-  choices: Array<{ message: { role: string; content: string } }>
+  choices: DeepSeekChoice[]
 }
+
+const TOOLS = [
+  {
+    type: "function",
+    function: {
+      name: "search_web",
+      description:
+        "Search the web for K-pop era references, NIKI/ENHYPEN outfit details, color palettes, visual style references. Use this when you need more specific era or styling information.",
+      parameters: {
+        type: "object",
+        properties: {
+          query: { type: "string", description: "Search query in English" },
+        },
+        required: ["query"],
+      },
+    },
+  },
+]
 
 function parseOutput(raw: string): { imagePrompt: string } {
   const promptMatch = raw.match(/###\s*Image Generation Prompt\s*\n([\s\S]*)/)
@@ -44,7 +75,7 @@ export async function POST(request: Request): Promise<Response> {
   let history: ClientMessage[]
 
   try {
-    const body = await request.json() as Record<string, unknown>
+    const body = (await request.json()) as Record<string, unknown>
 
     if (typeof body.productType !== "string" || !body.productType.trim()) {
       return Response.json({ error: "Missing productType" }, { status: 400 })
@@ -63,27 +94,42 @@ export async function POST(request: Request): Promise<Response> {
     return Response.json({ error: "Invalid request body" }, { status: 400 })
   }
 
-  const userMessageText = `Product type: ${productType}\n\nDescription: ${description}`
   const systemPrompt = buildSystemPrompt(productType)
-
-  const deepSeekMessages: DeepSeekMessage[] = [{ role: "system", content: systemPrompt }]
+  const messages: AnyMessage[] = [{ role: "system", content: systemPrompt }]
 
   for (const msg of history) {
-    deepSeekMessages.push({ role: msg.role, content: msg.content })
+    messages.push({ role: msg.role, content: msg.content })
   }
 
-  deepSeekMessages.push({ role: "user", content: userMessageText })
+  messages.push({
+    role: "user",
+    content: `Product type: ${productType}\n\nDescription: ${description}`,
+  })
 
-  let raw: string
-  try {
-    const res = await fetch("https://api.deepseek.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({ model: "deepseek-v4-pro", messages: deepSeekMessages }),
-    })
+  // Agent loop — DeepSeek can call search_web before writing the final prompt
+  const MAX_TURNS = 5
+  let raw = ""
+
+  for (let turn = 0; turn < MAX_TURNS; turn++) {
+    let res: Response
+    try {
+      res = await fetch("https://api.deepseek.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model: "deepseek-v4-pro",
+          messages,
+          tools: TOOLS,
+          tool_choice: "auto",
+        }),
+      })
+    } catch (err) {
+      console.error("DeepSeek fetch failed:", err)
+      return Response.json({ error: "Failed to reach upstream API" }, { status: 502 })
+    }
 
     if (!res.ok) {
       const text = await res.text()
@@ -92,10 +138,40 @@ export async function POST(request: Request): Promise<Response> {
     }
 
     const data = (await res.json()) as DeepSeekResponse
-    raw = data.choices[0]?.message?.content ?? ""
-  } catch (err) {
-    console.error("DeepSeek fetch failed:", err)
-    return Response.json({ error: "Failed to reach upstream API" }, { status: 502 })
+    const choice = data.choices[0]
+
+    if (choice.finish_reason === "tool_calls" && choice.message.tool_calls?.length) {
+      // Add assistant message with tool calls to history
+      messages.push(choice.message)
+
+      // Execute each tool call
+      for (const toolCall of choice.message.tool_calls) {
+        let result: string
+        if (toolCall.function.name === "search_web") {
+          try {
+            const args = JSON.parse(toolCall.function.arguments) as { query: string }
+            console.log("Searching:", args.query)
+            result = await searchWeb(args.query)
+          } catch (err) {
+            console.error("search_web failed:", err)
+            result = "Search failed, proceed without this information."
+          }
+        } else {
+          result = "Unknown tool."
+        }
+
+        messages.push({
+          role: "tool",
+          tool_call_id: toolCall.id,
+          content: result,
+        })
+      }
+      // Continue loop so DeepSeek can use the search results
+    } else {
+      // Final answer
+      raw = choice.message.content ?? ""
+      break
+    }
   }
 
   const { imagePrompt } = parseOutput(raw)
