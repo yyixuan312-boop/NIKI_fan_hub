@@ -72,6 +72,7 @@ export async function fetchVideoMeta(videoId: string): Promise<YouTubeVideoMeta>
 function inferVideoCategory(title: string, publishedAt: string): string {
   if (/cover|커버/i.test(title)) return 'Cover'
   if (/gayo|joint stage|weverse con|위버스콘|concert/i.test(title)) return 'Joint Stage'
+  if (/blood saga/i.test(title)) return '4th World Tour'
   const year = parseInt(publishedAt.slice(0, 4))
   return year <= 2024 ? '2nd Full Album' : 'mini 6'
 }
