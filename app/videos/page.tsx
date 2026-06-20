@@ -7,7 +7,7 @@ const videos = videosData as Video[]
 
 export default function VideosPage() {
   return (
-    <main className="bg-black min-h-screen px-6 md:px-10 py-16 md:py-24 max-w-7xl mx-auto">
+    <main className="bg-black min-h-screen px-6 md:px-10 py-16 md:py-24">
       <SectionHeader title="videos" />
       <VideoGrid videos={videos} />
     </main>
