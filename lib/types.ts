@@ -3,7 +3,7 @@ export interface Video {
   title: string
   youtubeId: string
   thumbnail?: string
-  category: "mv" | "performance" | "variety" | "fancam" | "weverse-live"
+  category: string
   channelName: string
   date: string
   durationLabel: string

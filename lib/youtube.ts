@@ -1,3 +1,6 @@
+import { unstable_cache } from 'next/cache'
+import type { Video } from './types'
+
 export interface YouTubeVideoMeta {
   youtubeId: string
   title: string
@@ -65,3 +68,68 @@ export async function fetchVideoMeta(videoId: string): Promise<YouTubeVideoMeta>
     thumbnailUrl: item.snippet.thumbnails.maxres?.url ?? item.snippet.thumbnails.high?.url ?? "",
   }
 }
+
+function inferVideoCategory(title: string, publishedAt: string): string {
+  if (/cover|커버/i.test(title)) return 'Cover'
+  if (/gayo|joint stage/i.test(title)) return 'Joint Stage'
+  const year = parseInt(publishedAt.slice(0, 4))
+  return year <= 2024 ? '2nd Full Album' : 'mini 6'
+}
+
+async function _searchNikiVideos(): Promise<Video[]> {
+  const apiKey = process.env.YOUTUBE_API_KEY
+  if (!apiKey) return []
+
+  const searchUrl = new URL('https://www.googleapis.com/youtube/v3/search')
+  searchUrl.searchParams.set('q', 'ENHYPEN NIKI 니키 직캠 fancam')
+  searchUrl.searchParams.set('type', 'video')
+  searchUrl.searchParams.set('order', 'date')
+  searchUrl.searchParams.set('maxResults', '20')
+  searchUrl.searchParams.set('part', 'snippet')
+  searchUrl.searchParams.set('key', apiKey)
+
+  const searchRes = await fetch(searchUrl.toString())
+  if (!searchRes.ok) return []
+
+  const searchData = await searchRes.json() as {
+    items?: Array<{ id: { videoId: string } }>
+  }
+  if (!searchData.items?.length) return []
+
+  const ids = searchData.items.map(i => i.id.videoId).join(',')
+  const detailUrl = new URL('https://www.googleapis.com/youtube/v3/videos')
+  detailUrl.searchParams.set('id', ids)
+  detailUrl.searchParams.set('part', 'snippet,contentDetails')
+  detailUrl.searchParams.set('key', apiKey)
+
+  const detailRes = await fetch(detailUrl.toString())
+  if (!detailRes.ok) return []
+
+  const detailData = await detailRes.json() as {
+    items?: Array<{
+      id: string
+      snippet: {
+        title: string
+        channelTitle: string
+        publishedAt: string
+      }
+      contentDetails: { duration: string }
+    }>
+  }
+
+  return (detailData.items ?? []).map(item => ({
+    id: `yt-${item.id}`,
+    title: item.snippet.title,
+    youtubeId: item.id,
+    category: inferVideoCategory(item.snippet.title, item.snippet.publishedAt),
+    channelName: item.snippet.channelTitle,
+    date: item.snippet.publishedAt.slice(0, 10),
+    durationLabel: parseDuration(item.contentDetails.duration),
+  }))
+}
+
+export const searchNikiVideos = unstable_cache(
+  _searchNikiVideos,
+  ['niki-youtube-search'],
+  { revalidate: 3600, tags: ['youtube-videos'] }
+)
