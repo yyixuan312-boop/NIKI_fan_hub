@@ -33,7 +33,9 @@ export default function AddCreativePanel() {
   const [platform, setPlatform] = useState('')
   const [tags, setTags] = useState('')
   const [orderStatus, setOrderStatus] = useState('')
-  const [copied, setCopied] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [saveError, setSaveError] = useState('')
+  const [saved, setSaved] = useState(false)
 
   useEffect(() => {
     // Activate via browser console: localStorage.setItem('niki_admin', '1')
@@ -84,11 +86,36 @@ export default function AddCreativePanel() {
     return entry
   }
 
-  async function handleCopy() {
-    const json = JSON.stringify(buildEntry(), null, 2)
-    await navigator.clipboard.writeText(json)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2500)
+  async function handleSave() {
+    if (!artist.trim()) return
+    setSaving(true)
+    setSaveError('')
+    try {
+      const res = await fetch('/api/save-creative', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ entry: buildEntry() }),
+      })
+      const data = (await res.json()) as { ok?: boolean; error?: string }
+      if (data.error) {
+        setSaveError(data.error)
+      } else {
+        setSaved(true)
+        setTimeout(() => {
+          setSaved(false)
+          setOpen(false)
+          setMeta(null)
+          setUrl('')
+          setArtist('')
+          setTags('')
+          setOrderStatus('')
+        }, 2000)
+      }
+    } catch {
+      setSaveError('Network error')
+    } finally {
+      setSaving(false)
+    }
   }
 
   if (!open) {
@@ -207,12 +234,13 @@ export default function AddCreativePanel() {
             </div>
           </div>
 
+          {saveError && <p className="text-xs text-red-400">{saveError}</p>}
           <button
-            onClick={handleCopy}
-            disabled={!artist.trim()}
+            onClick={handleSave}
+            disabled={!artist.trim() || saving || saved}
             className="w-full py-2.5 text-sm border border-white/20 rounded text-white/70 hover:text-white hover:border-white/50 transition-colors disabled:opacity-40"
           >
-            {copied ? '✓ copied! paste into fan-creatives.json' : 'copy JSON'}
+            {saved ? '✓ saved — deploying in ~1 min' : saving ? 'saving…' : 'save'}
           </button>
         </>
       )}
