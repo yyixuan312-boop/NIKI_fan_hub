@@ -114,6 +114,12 @@ export async function POST(request: Request): Promise<Response> {
     let res: Response
     try {
       const isLastTurn = turn === MAX_TURNS - 1
+      if (isLastTurn) {
+        messages.push({
+          role: "user",
+          content: "You have enough information. Now write the final image generation prompt directly. Do not call any tools.",
+        })
+      }
       res = await fetch("https://api.deepseek.com/v1/chat/completions", {
         method: "POST",
         headers: {
