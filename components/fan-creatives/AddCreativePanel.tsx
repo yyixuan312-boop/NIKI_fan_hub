@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type { FanCreative } from '@/lib/types'
 
 interface OGMeta {
@@ -21,7 +21,17 @@ const selectCls =
 const labelCls = 'text-xs text-white/40 block mb-1'
 
 export default function AddCreativePanel() {
+  const [isAdmin, setIsAdmin] = useState(false)
   const [open, setOpen] = useState(false)
+
+  useEffect(() => {
+    // Activate once by running in browser console:
+    //   localStorage.setItem('niki_admin', '1')
+    // Deactivate: localStorage.removeItem('niki_admin')
+    setIsAdmin(localStorage.getItem('niki_admin') === '1')
+  }, [])
+
+  if (!isAdmin) return null
   const [url, setUrl] = useState('')
   const [fetching, setFetching] = useState(false)
   const [fetchError, setFetchError] = useState('')
