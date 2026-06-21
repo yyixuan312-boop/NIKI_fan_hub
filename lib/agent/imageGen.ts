@@ -31,7 +31,7 @@ export async function generateImage({
       Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify(body),
-    signal: AbortSignal.timeout(90_000),
+    signal: AbortSignal.timeout(50_000),
   })
 
   if (!res.ok) {

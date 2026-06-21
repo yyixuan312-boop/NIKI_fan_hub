@@ -379,13 +379,17 @@ export default function DesignAgentPage() {
       fetch('/api/generate-image', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        signal: AbortSignal.timeout(90_000),
+        signal: AbortSignal.timeout(65_000),
         body: JSON.stringify({
           prompt: imagePrompt.replace(/\*\*/g, ''),
           referenceImageUrl,
         }),
       })
-        .then((r) => r.json())
+        .then(async (r) => {
+          const text = await r.text()
+          try { return JSON.parse(text) as { imageUrl: string | null; error?: string } }
+          catch { throw new Error(r.ok ? 'invalid response' : `server error ${r.status}`) }
+        })
         .then(({ imageUrl, error }: { imageUrl: string | null; error?: string }) => {
           if (error) console.error('generate-image error:', error)
           setHistory((prev) =>
