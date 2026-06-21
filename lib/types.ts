@@ -11,7 +11,7 @@ export interface Video {
 
 export interface FanCreative {
   id: string
-  type: "digital" | "traditional" | "3d" | "acrylic" | "doll" | "group-order"
+  type: "solo" | "ship" | "group" | "doll" | "group-order"
   artist: string
   platform: "Twitter" | "Instagram" | "Pixiv" | "Weibo" | "Xiaohongshu" | "Weidian" | "Carrd" | "Other"
   url: string

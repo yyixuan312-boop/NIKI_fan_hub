@@ -1,7 +1,7 @@
 [
   {
     "id": "jjjaaamin-mqngtcqf",
-    "type": "digital",
+    "type": "solo",
     "artist": "@jjjaaamin",
     "platform": "Twitter",
     "url": "https://x.com/jjjaaamin/status/2067556957549142069?s=46",
@@ -17,12 +17,7 @@
     "thumbnail": "/fan-creatives/doll-weidian-001.jpg",
     "date": "2026-06",
     "orderStatus": "open",
-    "tags": [
-      "doll",
-      "10cm",
-      "humanoid",
-      "instock"
-    ]
+    "tags": ["doll", "10cm", "humanoid", "instock"]
   },
   {
     "id": "nikkikki-002",
@@ -31,14 +26,9 @@
     "platform": "Weidian",
     "url": "https://weidian.com/item.html?itemID=7599674733",
     "thumbnail": "/fan-creatives/doll-weidian-002.jpg",
-    "date": "2026-06-11.23",
+    "date": "2026-06-11",
     "orderStatus": "open",
-    "tags": [
-      "doll",
-      "10cm",
-      "animal",
-      "proxy-buy"
-    ]
+    "tags": ["doll", "10cm", "animal", "proxy-buy"]
   },
   {
     "id": "呆斯ki-003",
@@ -49,12 +39,7 @@
     "thumbnail": "/fan-creatives/doll-weidian-003.jpg",
     "date": "2026-06",
     "orderStatus": "open",
-    "tags": [
-      "doll",
-      "10cm",
-      "humanoid",
-      "instock"
-    ]
+    "tags": ["doll", "10cm", "humanoid", "instock"]
   },
   {
     "id": "doll_accessories-001",
@@ -65,11 +50,7 @@
     "thumbnail": "/fan-creatives/doll_accessories-weidian-001.jpg",
     "date": "2026-06",
     "orderStatus": "open",
-    "tags": [
-      "doll-accessories",
-      "10cm",
-      "presale"
-    ]
+    "tags": ["doll-accessories", "10cm", "presale"]
   },
   {
     "id": "magazine-001",
@@ -80,10 +61,7 @@
     "thumbnail": "/fan-creatives/magazine-001.jpg",
     "date": "2026-06",
     "orderStatus": "open",
-    "tags": [
-      "magazine",
-      "proxy-buy"
-    ]
+    "tags": ["magazine", "proxy-buy"]
   },
   {
     "id": "nikkikki-004",
@@ -94,11 +72,6 @@
     "thumbnail": "/fan-creatives/doll-004.jpg",
     "date": "2025-06",
     "orderStatus": "open",
-    "tags": [
-      "doll",
-      "10cm",
-      "presale",
-      "humanoid"
-    ]
+    "tags": ["doll", "10cm", "presale", "humanoid"]
   }
 ]

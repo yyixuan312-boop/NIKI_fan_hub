@@ -11,7 +11,7 @@ interface OGMeta {
   finalUrl: string
 }
 
-const TYPES: FanCreative['type'][] = ['digital', 'traditional', '3d', 'acrylic', 'doll', 'group-order']
+const TYPES: FanCreative['type'][] = ['solo', 'ship', 'group']
 const PLATFORMS = ['Xiaohongshu', 'Twitter', 'Weibo', 'Instagram', 'Pixiv', 'Weidian', 'Carrd', 'Other']
 
 const inputCls =
@@ -29,7 +29,7 @@ export default function AddCreativePanel() {
   const [fetchError, setFetchError] = useState('')
   const [meta, setMeta] = useState<OGMeta | null>(null)
   const [artist, setArtist] = useState('')
-  const [type, setType] = useState<FanCreative['type']>('digital')
+  const [type, setType] = useState<FanCreative['type']>('solo')
   const [platform, setPlatform] = useState('')
   const [tags, setTags] = useState('')
   const [orderStatus, setOrderStatus] = useState('')
