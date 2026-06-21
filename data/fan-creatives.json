@@ -1,5 +1,14 @@
 [
   {
+    "id": "hamstmii-mqnhwtum",
+    "type": "ship",
+    "artist": "@hamstmii",
+    "platform": "Twitter",
+    "url": "https://x.com/hamstmii/status/2057804053342806393?s=46",
+    "thumbnail": "/api/proxy-image?url=https%3A%2F%2Fpbs.twimg.com%2Fmedia%2FHI7J4GKbEAA1ryK.jpg%3Alarge",
+    "date": "2026-06"
+  },
+  {
     "id": "jjjaaamin-mqngtcqf",
     "type": "solo",
     "artist": "@jjjaaamin",
@@ -17,7 +26,12 @@
     "thumbnail": "/fan-creatives/doll-weidian-001.jpg",
     "date": "2026-06",
     "orderStatus": "open",
-    "tags": ["doll", "10cm", "humanoid", "instock"]
+    "tags": [
+      "doll",
+      "10cm",
+      "humanoid",
+      "instock"
+    ]
   },
   {
     "id": "nikkikki-002",
@@ -28,7 +42,12 @@
     "thumbnail": "/fan-creatives/doll-weidian-002.jpg",
     "date": "2026-06-11",
     "orderStatus": "open",
-    "tags": ["doll", "10cm", "animal", "proxy-buy"]
+    "tags": [
+      "doll",
+      "10cm",
+      "animal",
+      "proxy-buy"
+    ]
   },
   {
     "id": "呆斯ki-003",
@@ -39,7 +58,12 @@
     "thumbnail": "/fan-creatives/doll-weidian-003.jpg",
     "date": "2026-06",
     "orderStatus": "open",
-    "tags": ["doll", "10cm", "humanoid", "instock"]
+    "tags": [
+      "doll",
+      "10cm",
+      "humanoid",
+      "instock"
+    ]
   },
   {
     "id": "doll_accessories-001",
@@ -50,7 +74,11 @@
     "thumbnail": "/fan-creatives/doll_accessories-weidian-001.jpg",
     "date": "2026-06",
     "orderStatus": "open",
-    "tags": ["doll-accessories", "10cm", "presale"]
+    "tags": [
+      "doll-accessories",
+      "10cm",
+      "presale"
+    ]
   },
   {
     "id": "magazine-001",
@@ -61,7 +89,10 @@
     "thumbnail": "/fan-creatives/magazine-001.jpg",
     "date": "2026-06",
     "orderStatus": "open",
-    "tags": ["magazine", "proxy-buy"]
+    "tags": [
+      "magazine",
+      "proxy-buy"
+    ]
   },
   {
     "id": "nikkikki-004",
@@ -72,6 +103,11 @@
     "thumbnail": "/fan-creatives/doll-004.jpg",
     "date": "2025-06",
     "orderStatus": "open",
-    "tags": ["doll", "10cm", "presale", "humanoid"]
+    "tags": [
+      "doll",
+      "10cm",
+      "presale",
+      "humanoid"
+    ]
   }
 ]
