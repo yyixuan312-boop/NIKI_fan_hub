@@ -113,6 +113,7 @@ export async function POST(request: Request): Promise<Response> {
   for (let turn = 0; turn < MAX_TURNS; turn++) {
     let res: Response
     try {
+      const isLastTurn = turn === MAX_TURNS - 1
       res = await fetch("https://api.deepseek.com/v1/chat/completions", {
         method: "POST",
         headers: {
@@ -120,10 +121,10 @@ export async function POST(request: Request): Promise<Response> {
           Authorization: `Bearer ${apiKey}`,
         },
         body: JSON.stringify({
-          model: "deepseek-v4-pro",
+          model: "deepseek-chat",
           messages,
-          tools: TOOLS,
-          tool_choice: "auto",
+          tools: isLastTurn ? undefined : TOOLS,
+          tool_choice: isLastTurn ? undefined : "auto",
         }),
         signal: AbortSignal.timeout(25_000),
       })
