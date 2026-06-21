@@ -40,8 +40,10 @@ export default function AddCreativePanel() {
   const [saved, setSaved] = useState(false)
 
   useEffect(() => {
-    // Activate via browser console: localStorage.setItem('niki_admin', '1')
-    // Deactivate:                   localStorage.removeItem('niki_admin')
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('admin') === 'niki2005') {
+      localStorage.setItem('niki_admin', '1')
+    }
     setIsAdmin(localStorage.getItem('niki_admin') === '1')
   }, [])
 
