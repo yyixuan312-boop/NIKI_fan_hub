@@ -1,68 +1,104 @@
 [
- {
-  "id": "周边玩偶礼-001",
-  "type": "doll",
-  "artist": "@微店卖家",
-  "platform": "Weidian",
-  "url": "https://weidian.com/item.html?itemID=7246421743",
-  "thumbnail": "/fan-creatives/doll-weidian-001.jpg",
-  "date": "2026-06",
-  "orderStatus": "open",
-  "tags": ["doll", "10cm", "humanoid","instock"]
+  {
+    "id": "jjjaaamin-mqngtcqf",
+    "type": "digital",
+    "artist": "@jjjaaamin",
+    "platform": "Twitter",
+    "url": "https://x.com/jjjaaamin/status/2067556957549142069?s=46",
+    "thumbnail": "/api/proxy-image?url=https%3A%2F%2Fpbs.twimg.com%2Fmedia%2FHLFwFgxakAA4z8D.jpg%3Alarge",
+    "date": "2026-06"
   },
   {
-  "id": "nikkikki-002",
-  "type": "doll",
-  "artist": "@nikkkikki_",
-  "platform": "Weidian",
-  "url": "https://weidian.com/item.html?itemID=7599674733",
-  "thumbnail": "/fan-creatives/doll-weidian-002.jpg",
-  "date": "2026-06-11.23",
-  "orderStatus": "open",
-  "tags": ["doll", "10cm", "animal","proxy-buy"]
+    "id": "周边玩偶礼-001",
+    "type": "doll",
+    "artist": "@微店卖家",
+    "platform": "Weidian",
+    "url": "https://weidian.com/item.html?itemID=7246421743",
+    "thumbnail": "/fan-creatives/doll-weidian-001.jpg",
+    "date": "2026-06",
+    "orderStatus": "open",
+    "tags": [
+      "doll",
+      "10cm",
+      "humanoid",
+      "instock"
+    ]
   },
   {
-   "id": "呆斯ki-003",
-  "type": "doll",
-  "artist": "@微店卖家",
-  "platform": "Weidian",
-  "url": "https://shop1658262693.v.weidian.com/item.html?itemID=7383082685",
-  "thumbnail": "/fan-creatives/doll-weidian-003.jpg",
-  "date": "2026-06",
-  "orderStatus": "open",
-  "tags": ["doll", "10cm", "humanoid", "instock"]
+    "id": "nikkikki-002",
+    "type": "doll",
+    "artist": "@nikkkikki_",
+    "platform": "Weidian",
+    "url": "https://weidian.com/item.html?itemID=7599674733",
+    "thumbnail": "/fan-creatives/doll-weidian-002.jpg",
+    "date": "2026-06-11.23",
+    "orderStatus": "open",
+    "tags": [
+      "doll",
+      "10cm",
+      "animal",
+      "proxy-buy"
+    ]
   },
   {
-  "id": "doll_accessories-001",
-  "type": "doll",
-  "artist": "娃帽制作",
-  "platform": "Weidian",
-  "url": "https://weidian.com/item.html?itemID=7768022751",
-  "thumbnail": "/fan-creatives/doll_accessories-weidian-001.jpg",
-  "date": "2026-06",
-  "orderStatus": "open",
-  "tags": ["doll-accessories", "10cm", "presale"]
+    "id": "呆斯ki-003",
+    "type": "doll",
+    "artist": "@微店卖家",
+    "platform": "Weidian",
+    "url": "https://shop1658262693.v.weidian.com/item.html?itemID=7383082685",
+    "thumbnail": "/fan-creatives/doll-weidian-003.jpg",
+    "date": "2026-06",
+    "orderStatus": "open",
+    "tags": [
+      "doll",
+      "10cm",
+      "humanoid",
+      "instock"
+    ]
   },
   {
-  "id": "magazine-001",
-  "type": "group-order",
-  "artist": "今日请吃N.K飯",
-  "platform": "Other",
-  "url": "https://shop1678410197.v.weidian.com/item.html?itemID=7785714918",
-  "thumbnail": "/fan-creatives/magazine-001.jpg",
-  "date": "2026-06",
-  "orderStatus": "open",
-  "tags": ["magazine", "proxy-buy"]
+    "id": "doll_accessories-001",
+    "type": "doll",
+    "artist": "娃帽制作",
+    "platform": "Weidian",
+    "url": "https://weidian.com/item.html?itemID=7768022751",
+    "thumbnail": "/fan-creatives/doll_accessories-weidian-001.jpg",
+    "date": "2026-06",
+    "orderStatus": "open",
+    "tags": [
+      "doll-accessories",
+      "10cm",
+      "presale"
+    ]
   },
-  { 
-  "id": "nikkikki-004",
-  "type": "doll",
-  "artist": "@nikkkikki_",
-  "platform": "Other",
-  "url": "https://weidian.com/item.html?itemID=7653309021",
-  "thumbnail": "/fan-creatives/doll-004.jpg",
-  "date": "2025-06",
-  "orderStatus": "open",
-  "tags": ["doll", "10cm", "presale", "humanoid"]
+  {
+    "id": "magazine-001",
+    "type": "group-order",
+    "artist": "今日请吃N.K飯",
+    "platform": "Other",
+    "url": "https://shop1678410197.v.weidian.com/item.html?itemID=7785714918",
+    "thumbnail": "/fan-creatives/magazine-001.jpg",
+    "date": "2026-06",
+    "orderStatus": "open",
+    "tags": [
+      "magazine",
+      "proxy-buy"
+    ]
+  },
+  {
+    "id": "nikkikki-004",
+    "type": "doll",
+    "artist": "@nikkkikki_",
+    "platform": "Other",
+    "url": "https://weidian.com/item.html?itemID=7653309021",
+    "thumbnail": "/fan-creatives/doll-004.jpg",
+    "date": "2025-06",
+    "orderStatus": "open",
+    "tags": [
+      "doll",
+      "10cm",
+      "presale",
+      "humanoid"
+    ]
   }
 ]
