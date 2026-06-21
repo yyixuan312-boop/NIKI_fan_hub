@@ -394,11 +394,12 @@ export default function DesignAgentPage() {
             )
           )
         })
-        .catch((err) => {
-          console.error('generate-image fetch failed:', err)
+        .catch((err: unknown) => {
+          const msg = err instanceof Error ? err.message : 'fetch failed'
+          console.error('generate-image fetch failed:', msg)
           setHistory((prev) =>
             prev.map((t, i) =>
-              i === turnIndex ? { ...t, result: { ...t.result, imageLoading: false } } : t
+              i === turnIndex ? { ...t, result: { ...t.result, imageLoading: false, imageError: msg } } : t
             )
           )
         })
