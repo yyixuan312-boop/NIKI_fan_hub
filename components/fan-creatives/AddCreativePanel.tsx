@@ -33,6 +33,8 @@ export default function AddCreativePanel() {
   const [platform, setPlatform] = useState('')
   const [tags, setTags] = useState('')
   const [orderStatus, setOrderStatus] = useState('')
+  const [customThumb, setCustomThumb] = useState('')
+  const [showThumbInput, setShowThumbInput] = useState(false)
   const [saving, setSaving] = useState(false)
   const [saveError, setSaveError] = useState('')
   const [saved, setSaved] = useState(false)
@@ -76,9 +78,10 @@ export default function AddCreativePanel() {
       artist,
       platform,
       url: url.trim(),
-      thumbnail: meta?.imageUrl
-        ? `/api/proxy-image?url=${encodeURIComponent(meta.imageUrl)}`
-        : '',
+      thumbnail: (() => {
+        const src = customThumb.trim() || meta?.imageUrl || ''
+        return src ? `/api/proxy-image?url=${encodeURIComponent(src)}` : ''
+      })(),
       date: new Date().toISOString().slice(0, 7),
     }
     if (orderStatus) entry.orderStatus = orderStatus
@@ -109,6 +112,8 @@ export default function AddCreativePanel() {
           setArtist('')
           setTags('')
           setOrderStatus('')
+          setCustomThumb('')
+          setShowThumbInput(false)
         }, 2000)
       }
     } catch {
@@ -164,19 +169,36 @@ export default function AddCreativePanel() {
       {meta && (
         <>
           <div className="flex gap-3 items-start p-3 bg-neutral-900/60 rounded">
-            {meta.imageUrl && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={meta.imageUrl}
-                alt=""
-                className="w-16 h-16 object-cover rounded shrink-0 bg-neutral-800"
-              />
-            )}
-            <div className="min-w-0">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={customThumb.trim() || meta.imageUrl || ''}
+              alt=""
+              className="w-16 h-16 object-cover rounded shrink-0 bg-neutral-800"
+            />
+            <div className="min-w-0 flex-1">
               <p className="text-sm text-white/80 line-clamp-2">{meta.title || '(no title found)'}</p>
               <p className="text-xs text-white/40 mt-1">{meta.platform} · {new URL(meta.finalUrl).hostname}</p>
+              <button
+                onClick={() => setShowThumbInput((v) => !v)}
+                className="text-xs text-white/40 hover:text-white/70 mt-2 transition-colors"
+              >
+                {showThumbInput ? 'cancel' : 'change cover image ↓'}
+              </button>
             </div>
           </div>
+
+          {showThumbInput && (
+            <div>
+              <label className={labelCls}>cover image URL — right-click the slide in XHS → copy image address</label>
+              <input
+                type="text"
+                value={customThumb}
+                onChange={(e) => setCustomThumb(e.target.value)}
+                placeholder="https://..."
+                className={inputCls}
+              />
+            </div>
+          )}
 
           <div className="grid grid-cols-2 gap-3">
             <div className="col-span-2">
