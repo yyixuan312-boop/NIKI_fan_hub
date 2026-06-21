@@ -21,28 +21,28 @@ const selectCls =
 const labelCls = 'text-xs text-white/40 block mb-1'
 
 export default function AddCreativePanel() {
+  // ALL hooks must come before any conditional return
   const [isAdmin, setIsAdmin] = useState(false)
   const [open, setOpen] = useState(false)
-
-  useEffect(() => {
-    // Activate once by running in browser console:
-    //   localStorage.setItem('niki_admin', '1')
-    // Deactivate: localStorage.removeItem('niki_admin')
-    setIsAdmin(localStorage.getItem('niki_admin') === '1')
-  }, [])
-
-  if (!isAdmin) return null
   const [url, setUrl] = useState('')
   const [fetching, setFetching] = useState(false)
   const [fetchError, setFetchError] = useState('')
   const [meta, setMeta] = useState<OGMeta | null>(null)
-
   const [artist, setArtist] = useState('')
   const [type, setType] = useState<FanCreative['type']>('digital')
   const [platform, setPlatform] = useState('')
   const [tags, setTags] = useState('')
   const [orderStatus, setOrderStatus] = useState('')
   const [copied, setCopied] = useState(false)
+
+  useEffect(() => {
+    // Activate via browser console: localStorage.setItem('niki_admin', '1')
+    // Deactivate:                   localStorage.removeItem('niki_admin')
+    setIsAdmin(localStorage.getItem('niki_admin') === '1')
+  }, [])
+
+  // Conditional return only AFTER all hooks
+  if (!isAdmin) return null
 
   async function handleFetch() {
     const trimmed = url.trim()
@@ -114,7 +114,6 @@ export default function AddCreativePanel() {
         </button>
       </div>
 
-      {/* URL input */}
       <div className="flex gap-2">
         <input
           type="text"
@@ -137,7 +136,6 @@ export default function AddCreativePanel() {
 
       {meta && (
         <>
-          {/* Preview */}
           <div className="flex gap-3 items-start p-3 bg-neutral-900/60 rounded">
             {meta.imageUrl && (
               // eslint-disable-next-line @next/next/no-img-element
@@ -153,7 +151,6 @@ export default function AddCreativePanel() {
             </div>
           </div>
 
-          {/* Form */}
           <div className="grid grid-cols-2 gap-3">
             <div className="col-span-2">
               <label className={labelCls}>artist / account</label>
@@ -172,9 +169,7 @@ export default function AddCreativePanel() {
                 onChange={(e) => setType(e.target.value as FanCreative['type'])}
                 className={selectCls}
               >
-                {TYPES.map((t) => (
-                  <option key={t} value={t}>{t}</option>
-                ))}
+                {TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
               </select>
             </div>
             <div>
@@ -184,9 +179,7 @@ export default function AddCreativePanel() {
                 onChange={(e) => setPlatform(e.target.value)}
                 className={selectCls}
               >
-                {PLATFORMS.map((p) => (
-                  <option key={p} value={p}>{p}</option>
-                ))}
+                {PLATFORMS.map((p) => <option key={p} value={p}>{p}</option>)}
               </select>
             </div>
             <div>
