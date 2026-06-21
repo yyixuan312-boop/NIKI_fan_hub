@@ -574,7 +574,7 @@ export default function DesignAgentPage() {
                       <section>
                         {turn.result.imageUrl ? (
                           <img
-                            src={`/api/proxy-image?url=${encodeURIComponent(turn.result.imageUrl)}`}
+                            src={turn.result.imageUrl}
                             alt="generated design"
                             className="w-full rounded-xl border border-white/10 object-cover"
                           />
