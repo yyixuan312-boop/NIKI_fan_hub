@@ -13,7 +13,7 @@ export interface FanCreative {
   id: string
   type: "digital" | "traditional" | "3d" | "acrylic" | "doll" | "group-order"
   artist: string
-  platform: "Twitter" | "Instagram" | "Pixiv" | "Weibo" | "Carrd" | "Other"
+  platform: "Twitter" | "Instagram" | "Pixiv" | "Weibo" | "Xiaohongshu" | "Weidian" | "Carrd" | "Other"
   url: string
   thumbnail: string
   date: string

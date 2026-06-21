@@ -3,6 +3,7 @@ import fanCreativesData from '@/data/fan-creatives.json'
 import FanArtCard from '@/components/cards/FanArtCard'
 import GroupOrderCard from '@/components/cards/GroupOrderCard'
 import SectionHeader from '@/components/ui/SectionHeader'
+import AddCreativePanel from '@/components/fan-creatives/AddCreativePanel'
 
 const creatives = fanCreativesData as FanCreative[]
 
@@ -17,6 +18,7 @@ export default function FanCreativesPage() {
 
   return (
     <main className="bg-black min-h-screen px-6 md:px-10 py-16 md:py-24 max-w-7xl mx-auto">
+      <AddCreativePanel />
       <section>
         <SectionHeader title="fan art" />
         {fanArt.length === 0 ? (
