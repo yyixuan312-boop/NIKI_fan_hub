@@ -1,5 +1,6 @@
 import { buildSystemPrompt } from "@/lib/agent/promptBuilder"
 import { searchWeb } from "@/lib/agent/search"
+import { routeIntentWithDeepSeekFallback } from "@/lib/agent/intentRouter"
 
 export const maxDuration = 60
 
@@ -94,7 +95,12 @@ export async function POST(request: Request): Promise<Response> {
     return Response.json({ error: "Invalid request body" }, { status: 400 })
   }
 
-  const systemPrompt = buildSystemPrompt(productType)
+  const effectiveProductType =
+    productType === "other"
+      ? await routeIntentWithDeepSeekFallback(description)
+      : productType
+
+  const systemPrompt = buildSystemPrompt(effectiveProductType)
   const messages: AnyMessage[] = [{ role: "system", content: systemPrompt }]
 
   for (const msg of history) {
